@@ -1,14 +1,29 @@
 
+import {useState } from "react";
 import { CustomButton } from "../../components/CustomButton/CustomButton";
 import { CustomInput } from "../../components/CustomInput/CustomInput"
 import "./Login.css"
+import { loginCall } from "../../services/apiCalls";
 
 export const Login = () => {
-
     //Login and landing page
 
-    const loginMe = () => {
-        console.log("Hola Login!");
+    const [credentials, setCredentials] = useState({
+        email: "",
+        password: "",
+    });
+
+    const inputHandler = (e) => {
+        setCredentials((prevSate) => ({
+            ...prevSate,
+            [e.target.name]: e.target.value
+        }));
+    }
+
+    const loginMe = async() => {
+        //Function to login...
+        const res = await loginCall(credentials);
+        console.log(res);
     }
 
     return (
@@ -28,11 +43,14 @@ export const Login = () => {
                                         typeProp={"email"}
                                         nameProp={"email"}
                                         placeholderProp={"Your email..."}
+                                        handlerProp={(e) => inputHandler(e)}
                                     />
                                     <CustomInput
                                         typeProp={"password"}
                                         nameProp={"password"}
                                         placeholderProp={"Password"}
+                                        handlerProp={(e) => inputHandler(e)}
+
                                     />
                                     <div className="logOrRegister-box-design d-flex">
                                         <CustomButton

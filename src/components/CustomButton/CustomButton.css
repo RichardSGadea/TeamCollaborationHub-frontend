@@ -1,0 +1,27 @@
+.regularButtonClass{
+    height: 2em;
+    width: 10em;
+    margin-right: 1em;
+
+    background: #74A78A;
+    color: white;
+
+    font-weight: 700;
+    font-size: 15px;
+    outline: none;
+    border: none;
+
+    transition: 0.3s;
+    letter-spacing: 1px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.regularButtonClass:hover {
+
+    cursor: pointer;
+    background: #E59B9B;
+    transition: 0.3s;
+}

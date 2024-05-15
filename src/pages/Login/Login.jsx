@@ -4,6 +4,7 @@ import { CustomButton } from "../../components/CustomButton/CustomButton";
 import { CustomInput } from "../../components/CustomInput/CustomInput"
 import "./Login.css"
 import { loginCall } from "../../services/apiCalls";
+import RegisterModal from "../../components/RegisterModal/RegisterModal";
 
 export const Login = () => {
     //Login and landing page
@@ -58,7 +59,10 @@ export const Login = () => {
                                             classNameProp={"regularButtonClass"}
                                             functionEmit={loginMe}
                                         />
-                                        <a className="p-2 link-white" href="/register">You don´t have an account? Register</a>
+                                        <RegisterModal
+                                            btnProp={false}
+                                            titleProp={"You don´t have an account? Register"}
+                                        />
                                     </div>
                                 </div>
                             </div>

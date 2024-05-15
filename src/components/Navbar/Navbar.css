@@ -1,0 +1,16 @@
+.appBox-design{
+    background-color: beige;
+}
+
+.allActions-design{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.actions-design{
+    display: flex;
+    flex-direction: row;
+    width: 60vw;
+}
+

@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import "./RegisterModal.css"
 import Modal from 'react-bootstrap/Modal';
-import { useEffect, useState } from 'react';
+import {useState } from 'react';
 import { CustomInput } from '../CustomInput/CustomInput';
 import { registerCall } from '../../services/apiCalls';
 
@@ -49,10 +49,6 @@ function MyVerticallyCenteredModal({ onRegisterSuccess, show, onHide }) {
             console.log(error);
         }
     }
-
-    useEffect(()=>{
-        console.log(newUser);
-    },[newUser])
 
     return (
         <Modal

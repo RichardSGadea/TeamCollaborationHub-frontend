@@ -1,10 +1,12 @@
-
-import {useState } from "react";
+import { useState } from "react";
 import { CustomButton } from "../../components/CustomButton/CustomButton";
 import { CustomInput } from "../../components/CustomInput/CustomInput"
-import "./Login.css"
 import { loginCall } from "../../services/apiCalls";
 import RegisterModal from "../../components/RegisterModal/RegisterModal";
+import { useDispatch } from "react-redux";
+import { decodeToken } from "react-jwt";
+import { login } from "../../app/Slices/userSlice"
+import "./Login.css"
 
 export const Login = () => {
     //Login and landing page
@@ -14,6 +16,8 @@ export const Login = () => {
         password: "",
     });
 
+    const dispatch = useDispatch()
+
     const inputHandler = (e) => {
         setCredentials((prevSate) => ({
             ...prevSate,
@@ -21,10 +25,25 @@ export const Login = () => {
         }));
     }
 
-    const loginMe = async() => {
-        //Function to login...
-        const res = await loginCall(credentials);
-        console.log(res);
+    const loginMe = async () => {
+        try {
+            //Function to login...
+            const res = await loginCall(credentials);
+            if (res.data.token) {
+                const uDecoded = decodeToken(res.data.token)
+
+                const passport = {
+                    token: res.data.token,
+                    decoded: uDecoded
+                }
+
+                //Save passport on RDX
+                dispatch(login(passport))
+
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -34,6 +53,7 @@ export const Login = () => {
                 <div className="col-10 d-flex justify-content-center align-items-center">
                     <div className="container-fluid">
                         <div className="row">
+
                             <div className="col-12 col-lg-6 boxIcon-design">
                                 <img className="iconImage-design" src="../../TeamCollaborationHubIcon.png" alt="TeamCollaborationHub-Icon" />
                             </div>
@@ -66,6 +86,7 @@ export const Login = () => {
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
 

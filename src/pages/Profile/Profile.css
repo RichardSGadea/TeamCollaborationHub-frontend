@@ -1,0 +1,16 @@
+.boxProfile-design{
+    background-color:beige ;
+    height: 100vh;
+}
+
+.title-update-profile{
+    color:#E59B9B;
+}
+
+.titles-update{
+    color:#74A78A;
+}
+
+.passwordError{
+    height: 0.2em;
+}

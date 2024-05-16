@@ -31,10 +31,17 @@ export const userSlice = createSlice({
                 
             }
         },
+
+        update: (state, action) => {
+            return{
+                ...state,
+                ...action.payload,
+            }
+        },
     }
 })
 
-export const {login,logout} = userSlice.actions
+export const {login,logout,update} = userSlice.actions
 
 export const getUserData = (state) => state.user
 

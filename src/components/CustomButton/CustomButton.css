@@ -25,3 +25,14 @@
     background: #E59B9B;
     transition: 0.3s;
 }
+
+.btn-update-profile{
+    background: #74A78A;
+    color: white;
+    margin-right: 1em;
+}
+.btn-update-profile:hover{
+    cursor: pointer;
+    background: #E59B9B;
+    transition: 0.3s;
+}

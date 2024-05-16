@@ -8,7 +8,7 @@ export const Home = () => {
     
     return(
         <div className="container-fluid boxHome-design">
-            <h1 className="title-welcome">{`Welcome ${nameUser.decoded.userFirstName}, this is your workspace!`}</h1>
+            <h1 className="title-welcome">{`Welcome ${nameUser.decoded.userRole}, this is your workspace!`}</h1>
         </div>
 
     )

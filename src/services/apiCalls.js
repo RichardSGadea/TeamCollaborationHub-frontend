@@ -13,3 +13,26 @@ export const registerCall = async (credentials) => {
     return res
 }
 
+// Get and update user profile calls
+
+export const bringProfile = async (token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const res = await axios.get(`${API_URL}/users/profile`, config)
+    
+    return res.data
+}
+
+export const updateProfile = async (data, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const res = await axios.put(`${API_URL}/users/profile`, data, config)
+    return res
+}
+

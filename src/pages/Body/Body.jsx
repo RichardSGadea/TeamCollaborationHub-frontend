@@ -1,8 +1,9 @@
-import { Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom"
 import { Login } from "../Login/Login"
 import { Home } from "../Home/Home"
 import { useSelector } from "react-redux";
 import { getUserData } from "../../app/Slices/userSlice";
+import { Profile } from "../Profile/Profile";
 
 export const Body = () => {
 
@@ -12,8 +13,12 @@ export const Body = () => {
 
         <>
             <Routes>
+                {/* Routes no exist */}
+                <Route path="*" element={<Navigate to="/"/>}/>
 
+                {/* Routes exist */}
                 <Route path="/" element={user.token==="" ? <Login /> : <Home />}></Route>
+                <Route path="/profile" element={<Profile />}></Route>
             </Routes>
         </>
 

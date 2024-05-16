@@ -1,6 +1,6 @@
 import "./CustomInput.css"
 
-export const CustomInput = ({typeProp, nameProp, placeholderProp, handlerProp}) => {
+export const CustomInput = ({typeProp,value, nameProp, placeholderProp, handlerProp,isDisabled}) => {
 
     return(
 
@@ -10,6 +10,8 @@ export const CustomInput = ({typeProp, nameProp, placeholderProp, handlerProp}) 
             name={nameProp}
             placeholder={placeholderProp}
             onChange={(e)=>handlerProp(e)}
+            value={value}
+            disabled={isDisabled}
         >
         </input>
     )

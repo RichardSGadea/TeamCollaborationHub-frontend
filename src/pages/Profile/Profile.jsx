@@ -132,7 +132,7 @@ export const Profile = () => {
                                         nameProp="lastName"
                                         handlerProp={(e) => inputHandler(e)}
                                         placeholderProp="lastName"
-                                        value={profileData.lastName}
+                                        value={profileData.lastName || ""}
                                         isDisabled={!areYouEditingProfileData && "disabled"}
                                     />
                                 </div>

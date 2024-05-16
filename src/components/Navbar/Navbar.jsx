@@ -30,7 +30,7 @@ function NavigationBar() {
                                 <Nav.Link href="/profile"><img src="../../userProfileIcon.png" width="20px" height="20px" alt="" /></Nav.Link>
                             </Nav>
                             <Nav className='actionLogout-design'>
-                                <Nav.Link onClick={() => {
+                                <Nav.Link href="/" onClick={() => {
                                     logMeOut()
                                 }}><img src="../../logoutIcon.png" width="20px" height="20px" alt="" /></Nav.Link>
                             </Nav>

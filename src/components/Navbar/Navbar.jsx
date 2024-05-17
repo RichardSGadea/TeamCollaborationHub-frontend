@@ -26,7 +26,6 @@ function NavigationBar() {
                         <Nav className="allActions-design">
                             <Nav className='actions-design'>
                                 <Nav.Link href="/"><img src="../../homeIcon.png" width="20px" height="20px" alt="" /></Nav.Link>
-                                <Nav.Link ><img src="../../groupIcon.png" width="20px" height="20px" alt="" /></Nav.Link>
                                 <Nav.Link href="/profile"><img src="../../userProfileIcon.png" width="20px" height="20px" alt="" /></Nav.Link>
                             </Nav>
                             <Nav className='actionLogout-design'>

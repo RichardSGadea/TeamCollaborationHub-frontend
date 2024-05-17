@@ -36,3 +36,14 @@ export const updateProfile = async (data, token) => {
     return res
 }
 
+// Get groups
+export const bringGroups = async(token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const res = await axios.get(`${API_URL}/groups/`, config)
+    return res.data.groups
+}
+

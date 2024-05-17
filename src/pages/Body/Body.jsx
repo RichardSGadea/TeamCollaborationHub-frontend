@@ -9,9 +9,8 @@ import { Group } from "../Group/Group";
 export const Body = () => {
 
     const user  = useSelector(getUserData);
-
+    
     return (
-
         <>
             <Routes>
                 {/* Routes no exist */}
@@ -20,7 +19,7 @@ export const Body = () => {
                 {/* Routes exist */}
                 <Route path="/" element={user.token==="" ? <Login /> : <Home />}></Route>
                 <Route path="/profile" element={<Profile />}></Route>
-                <Route path="/group" element={<Group />}></Route>
+                <Route path="/group/:groupId" element={<Group />}></Route>
             </Routes>
         </>
 

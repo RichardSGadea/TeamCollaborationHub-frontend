@@ -4,3 +4,14 @@
     background-color: var(--bs-table-bg); /* Apply bg color */
     color: var(--bs-table-color)
 }
+
+.iconActionsTeacher-design{
+    border: none;
+    background: none;
+    margin-left: 0.8em;
+    padding: 0;
+}
+
+.iconActionsTeacher-design:hover{
+    cursor: pointer;
+}

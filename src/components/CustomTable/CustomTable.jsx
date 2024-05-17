@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import Table from 'react-bootstrap/Table';
 import { getUserData } from "../../app/Slices/userSlice";
 import "./CustomTable.css"
+import { Link } from "react-router-dom";
 
 function CustomTable({ dataProp, columnProp }) {
 
@@ -13,7 +14,7 @@ function CustomTable({ dataProp, columnProp }) {
                 <tr>
                     {columnProp.map((item) => {
                         return (
-                            <th  key={item.id}>{item.name}</th>
+                            <th key={item.id}>{item.name}</th>
                         )
                     })}
                 </tr>
@@ -22,8 +23,12 @@ function CustomTable({ dataProp, columnProp }) {
                 {dataProp.map((item) => {
                     return (
                         <tr key={item.id}>
-                            <td><a href={`/group`}>{item.name}</a></td>
-                            {user.decoded.userRole === "teacher" && <td></td>}
+                            <td><Link to={`/group/${item.id}`}>{item.name}</Link></td>
+                            {user.decoded.userRole === "teacher" &&
+                                <td>
+                                    <button className="iconActionsTeacher-design"><img src="../../trash.png" width="20px" height="20px" alt="" /></button>
+                                    <button className="iconActionsTeacher-design"><img src="../../addStudentIcon.png" width="20px" height="20px" alt="" /></button>
+                                </td>}
                         </tr>
                     )
                 })}

@@ -58,3 +58,15 @@ export const bringGroupById = async(token,id) => {
     return res.data
 }
 
+//Get users out of group by id
+
+export const bringOutUsers = async(token,id) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const res = await axios.get(`${API_URL}/groups/${id}/outUsers`, config)
+    return res.data
+}
+

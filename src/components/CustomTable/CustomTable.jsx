@@ -5,7 +5,7 @@ import "./CustomTable.css"
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-function CustomTable({ dataProp, columnProp, numberGroup }) {
+function CustomTable({ dataProp, columnProp, numberGroup, typeUsers }) {
 
     const user = useSelector(getUserData)
     const [locationUrl, setLocationUrl] = useState("")
@@ -17,14 +17,14 @@ function CustomTable({ dataProp, columnProp, numberGroup }) {
             setLocationUrl(location.pathname)
         }
         fetchUrl()
-        
+
     }, [locationUrl])
 
-    
+
 
     return (
         <Table>
-            <thead className="tableHeader">
+            <thead className={typeUsers==="" ? "tableHeader" : typeUsers==="outGroup" ? "otherTableHeader" : "tableHeader"}>
                 <tr>
                     {columnProp.map((item) => {
                         return (
@@ -42,10 +42,10 @@ function CustomTable({ dataProp, columnProp, numberGroup }) {
                                 {user.decoded.userRole === "teacher" &&
                                     <td>
                                         <button className="iconActionsTeacher-design"><img src="../../trash.png" width="20px" height="20px" alt="" /></button>
-                                        <button className="iconActionsTeacher-design"><img src="../../addStudentIcon.png" width="20px" height="20px" alt="" /></button>
+                                        <Link to={`/group/${item.id}/users`}><button className="iconActionsTeacher-design"><img src="../../addStudentIcon.png" width="20px" height="20px" alt="" /></button></Link>
                                     </td>}
                             </tr>)
-                        }))) : locationUrl === `/group/${numberGroup}` ?
+                        }))) : locationUrl === `/group/${numberGroup}` || locationUrl === `/group/${numberGroup}/users` ?
                         (
                             dataProp.map((item) => {
                                 return (<tr key={item.id}>
@@ -53,6 +53,11 @@ function CustomTable({ dataProp, columnProp, numberGroup }) {
                                         <td>{item.firstName}</td>
                                         <td>{item.lastName}</td>
                                         <td>{item.email}</td>
+                                        {locationUrl === `/group/${numberGroup}/users` &&
+                                            <td><button className="iconActionsTeacher-design">
+                                                    <img src={typeUsers==="inGroup" ? "../../lessIcon.png" : "../../plusIcon.png"} width="20px" height="20px" alt="" />
+                                                </button>
+                                            </td>}
                                     </>
                                     }
 

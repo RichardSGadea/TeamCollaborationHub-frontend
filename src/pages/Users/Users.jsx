@@ -15,19 +15,22 @@ export const Users = () => {
     const user = useSelector(getUserData)
     const token = user.token
 
-    const columnNames = [{id:1,name:"FirstName"},{id:2,name:"LastName"},{id:3,name:"Email"},{id:4,name:"Actions"}]
+    //To control pages change
+    const [totalPages, setTotalPages] = useState()
+    const [currentPage, setCurrentPage] = useState(1)
+
+    const columnNames = [{ id: 1, name: "FirstName" }, { id: 2, name: "LastName" }, { id: 3, name: "Email" }, { id: 4, name: "Actions" }]
 
     useEffect(() => {
         fetchGroupData(groupId)
         fetchOtherUsers(groupId)
-    }, [groupId])
+    }, [groupId,currentPage])
 
     const fetchGroupData = async (id) => {
         //Retrieve group data
         try {
             const resGroup = await bringGroupById(token, id)
             setGroupData(resGroup);
-            // console.log(resGroup);
 
         } catch (error) {
             console.log(error);
@@ -36,16 +39,17 @@ export const Users = () => {
     const fetchOtherUsers = async (id) => {
         //Retrieve group data
         try {
-            const res = await bringOutUsers(token, id)
-            setOutsideUsers(res);
-            // console.log(res);
+            const res = await bringOutUsers(token, id, currentPage)
+            setOutsideUsers(res.studentsOutOfGroup);
+            setTotalPages(res.total_pages)
+            console.log(res);
 
         } catch (error) {
             console.log(error);
         }
     };
 
-    if (!groupData) {
+    if (!groupData || !outsideUsers) {
         return <div>Loading data...</div>;
     }
 
@@ -54,20 +58,31 @@ export const Users = () => {
             <div className="row">
                 <div className="col-12">
                     <h1 className="viewTitle-design">Add Students: {groupData.name}</h1>
-                    <h2 className="studentsTitle-design">Students of this group</h2>
-                    <CustomTable 
+                    <h2 className="studentsTitle-design">Users of this group</h2>
+                    <CustomTable
                         dataProp={groupData.users}
                         columnProp={columnNames}
                         numberGroup={groupId}
                         typeUsers={"inGroup"}
                     />
                     <h2 className="studentsTitle-design">Other Students</h2>
-                    <CustomTable 
+                    <CustomTable
                         dataProp={outsideUsers}
                         columnProp={columnNames}
                         numberGroup={groupId}
                         typeUsers={"outGroup"}
                     />
+                    <button disabled={currentPage == 1 ? "disabled" : ""} onClick={() => {
+
+                        if (currentPage > 1) {
+                            setCurrentPage(currentPage - 1)
+                        }
+                    }}>{"<-"}</button>
+                    <button disabled={currentPage == totalPages ? "disabled" : ""} onClick={() => {
+                        if (currentPage < totalPages) {
+                            setCurrentPage(currentPage + 1)
+                        }
+                    }}>{"->"}</button>
                 </div>
             </div>
         </div>

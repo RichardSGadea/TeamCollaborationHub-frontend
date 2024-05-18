@@ -45,7 +45,7 @@ export const Group = () => {
                     </div>
                 </div>
                 <div className="col-12 col-lg-7">
-                    <h2 className="groupName-design mt-2">Students</h2>
+                    <h2 className="groupName-design mt-2">Users</h2>
                     <CustomTable 
                         dataProp={groupData.users}
                         columnProp={columnNames}

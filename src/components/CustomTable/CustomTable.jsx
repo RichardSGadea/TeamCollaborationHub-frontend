@@ -24,7 +24,7 @@ function CustomTable({ dataProp, columnProp, numberGroup, typeUsers }) {
 
     return (
         <Table>
-            <thead className={typeUsers==="" ? "tableHeader" : typeUsers==="outGroup" ? "otherTableHeader" : "tableHeader"}>
+            <thead className={typeUsers === "" ? "tableHeader" : typeUsers === "outGroup" ? "otherTableHeader" : "tableHeader"}>
                 <tr>
                     {columnProp.map((item) => {
                         return (
@@ -49,17 +49,22 @@ function CustomTable({ dataProp, columnProp, numberGroup, typeUsers }) {
                         (
                             dataProp.map((item) => {
                                 return (<tr key={item.id}>
-                                    {item.roleId !== 2 && <>
+
+                                    <>
                                         <td>{item.firstName}</td>
                                         <td>{item.lastName}</td>
                                         <td>{item.email}</td>
                                         {locationUrl === `/group/${numberGroup}/users` &&
-                                            <td><button className="iconActionsTeacher-design">
-                                                    <img src={typeUsers==="inGroup" ? "../../lessIcon.png" : "../../plusIcon.png"} width="20px" height="20px" alt="" />
-                                                </button>
+                                            <td>
+                                                {item.roleId !== 2 ?(
+                                                    <button className="iconActionsTeacher-design">
+                                                        <img src={typeUsers === "inGroup" ? "../../lessIcon.png" : "../../plusIcon.png"} width="20px" height="20px" alt="" />
+                                                    </button>):("TEACHER")}
+
+
                                             </td>}
                                     </>
-                                    }
+
 
                                 </tr>)
                             })

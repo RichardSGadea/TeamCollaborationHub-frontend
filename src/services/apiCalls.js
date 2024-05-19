@@ -36,6 +36,28 @@ export const updateProfile = async (data, token) => {
     return res
 }
 
+//Create group
+export const createNewGroup = async(token, data) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const res = await axios.post(`${API_URL}/groups/create`,data,config)
+    return res
+}
+
+//Update group
+export const updateGroupById = async(token,groupId, data) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const res = await axios.put(`${API_URL}/groups/${groupId}`,data,config)
+    return res
+}
+
 // Get groups 
 export const bringGroups = async(token) => {
     const config = {

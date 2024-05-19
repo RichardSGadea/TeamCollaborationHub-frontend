@@ -5,6 +5,7 @@ import "./CustomTable.css"
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { addUserGroup, deleteUserGroup } from "../../services/apiCalls";
+import CustomModal from "../CustomModal/CustomModal";
 
 function CustomTable({ dataProp, columnProp, numberGroup, typeUsers, onAddedOrDeletedSuccess}) {
 
@@ -60,6 +61,10 @@ function CustomTable({ dataProp, columnProp, numberGroup, typeUsers, onAddedOrDe
                                     <td>
                                         <button className="iconActionsTeacher-design"><img src="../../trash.png" width="20px" height="20px" alt="" /></button>
                                         <Link to={`/group/${item.id}/users`}><button className="iconActionsTeacher-design"><img src="../../addStudentIcon.png" width="20px" height="20px" alt="" /></button></Link>
+                                        <CustomModal 
+                                            actionProp={"modifyGroup"}
+                                            groupIdProp={item.id}
+                                        />
                                     </td>}
                             </tr>)
                         }))) : locationUrl === `/group/${numberGroup}` || locationUrl === `/group/${numberGroup}/users` ?

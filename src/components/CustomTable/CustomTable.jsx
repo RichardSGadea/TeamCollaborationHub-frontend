@@ -4,13 +4,15 @@ import { getUserData } from "../../app/Slices/userSlice";
 import "./CustomTable.css"
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { addUserGroup, deleteUserGroup } from "../../services/apiCalls";
 
-function CustomTable({ dataProp, columnProp, numberGroup, typeUsers }) {
+function CustomTable({ dataProp, columnProp, numberGroup, typeUsers, onAddedOrDeletedSuccess}) {
 
     const user = useSelector(getUserData)
     const [locationUrl, setLocationUrl] = useState("")
 
     const location = useLocation()
+    const token = user.token
 
     useEffect(() => {
         const fetchUrl = () => {
@@ -20,7 +22,22 @@ function CustomTable({ dataProp, columnProp, numberGroup, typeUsers }) {
 
     }, [locationUrl])
 
-
+    const addUserToGroup = async(userId) =>{
+        try {
+            const res = await addUserGroup(token,numberGroup,userId)
+            onAddedOrDeletedSuccess()
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    const deleteUserToGroup = async(userId) =>{
+        try {
+            const res = await deleteUserGroup(token,numberGroup,userId)
+            onAddedOrDeletedSuccess()
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <Table>
@@ -57,7 +74,12 @@ function CustomTable({ dataProp, columnProp, numberGroup, typeUsers }) {
                                         {locationUrl === `/group/${numberGroup}/users` &&
                                             <td>
                                                 {item.roleId !== 2 ?(
-                                                    <button className="iconActionsTeacher-design">
+                                                    <button className="iconActionsTeacher-design" onClick={()=>{
+                                                        typeUsers === "inGroup" ?
+                                                        deleteUserToGroup(item.id)
+                                                        :
+                                                        addUserToGroup(item.id)
+                                                        }}>
                                                         <img src={typeUsers === "inGroup" ? "../../lessIcon.png" : "../../plusIcon.png"} width="20px" height="20px" alt="" />
                                                     </button>):("TEACHER")}
 

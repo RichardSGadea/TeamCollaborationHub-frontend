@@ -15,15 +15,15 @@ export const Tasks = () => {
     const [tasksToDo, setTasksToDo] = useState([])
     const [tasksInProgress, setTasksInProgress] = useState([])
     const [tasksCompleted, setTasksCompleted] = useState([])
-
-
+    const [taskCreated, setTaskCreated] = useState(false);
 
     const user = useSelector(getUserData)
     const token = user.token
 
+
     useEffect(() => {
         fetchTasksData(groupId)
-    }, [groupId])
+    }, [groupId,taskCreated])
 
     const fetchTasksData = async (id) => {
         try {
@@ -38,7 +38,12 @@ export const Tasks = () => {
             console.log(error)
         }
     };
-    
+
+    const handleCreateSuccess = () => {
+        setTaskCreated(!taskCreated);
+        
+    }
+
     // if (!tasksToDo) {
     //     return <div>Loading data...</div>;
     // }
@@ -51,6 +56,8 @@ export const Tasks = () => {
                     {user.decoded.userRole === "student" &&
                         <CustomModal
                             actionProp="createTask"
+                            groupIdProp={groupId}
+                            onCreateSuccess={handleCreateSuccess}
                         />}
                 </div>
             </div>
@@ -64,6 +71,7 @@ export const Tasks = () => {
                                     {tasksToDo.map((item) => {
                                         return(<CustomCard
                                             key={item.id}
+                                            classNameProp={"taskToDo-design m-1 border-danger"}
                                             titleProp={item.name}
                                             createProp={item.createDate}
                                             deadlineProp={item.deadline}

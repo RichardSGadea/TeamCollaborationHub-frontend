@@ -1,11 +1,11 @@
 import Card from 'react-bootstrap/Card';
 import dayjs from "dayjs"
 
-function CustomCard({ titleProp, createProp, deadlineProp }) {
+function CustomCard({ titleProp, createProp, deadlineProp,classNameProp }) {
 
 
     return (
-        <Card style={{ width: '18rem' }}>
+        <Card style={{ width: '18rem' }} className={classNameProp}>
             <Card.Body>
                 <Card.Title>{titleProp}</Card.Title>
                 <Card.Text>      

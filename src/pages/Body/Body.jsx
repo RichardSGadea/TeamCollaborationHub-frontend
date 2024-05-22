@@ -6,6 +6,7 @@ import { getUserData } from "../../app/Slices/userSlice";
 import { Profile } from "../Profile/Profile";
 import { Group } from "../Group/Group";
 import { Users } from "../Users/Users";
+import { Tasks } from "../Tasks/Tasks";
 
 export const Body = () => {
 
@@ -22,6 +23,7 @@ export const Body = () => {
                 <Route path="/profile" element={<Profile />}></Route>
                 <Route path="/group/:groupId" element={<Group />}></Route>
                 <Route path="/group/:groupId/users" element={<Users />}></Route>
+                <Route path="/group/:groupId/tasks" element={<Tasks />}></Route>
             </Routes>
         </>
 

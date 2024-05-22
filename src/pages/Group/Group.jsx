@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react";
 import { bringGroupById } from "../../services/apiCalls";
 import { useSelector } from "react-redux";
@@ -15,6 +15,8 @@ export const Group = () => {
 
     const user = useSelector(getUserData)
     const token = user.token
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         fetchGroupData(groupId)
@@ -51,7 +53,7 @@ export const Group = () => {
                         columnProp={columnNames}
                         numberGroup={groupId}
                     />
-                    <h2 className="groupName-design mt-5">Tasks</h2>
+                    <h2 className="groupName-design mt-5" onClick={() => navigate(`/group/${groupId}/tasks`)}>Tasks</h2>
                     <p className="statesTasks-design">Tasks To Do: <span className="text-danger"></span></p>
                     <p className="statesTasks-design">Tasks In Progress: <span className="text-info"></span></p>
                     <p className="statesTasks-design">Completed Tasks: <span className="text-success"></span></p>

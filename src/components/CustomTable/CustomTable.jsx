@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { addUserGroup, deleteUserGroup } from "../../services/apiCalls";
 import CustomModal from "../CustomModal/CustomModal";
 
-function CustomTable({ dataProp, columnProp, numberGroup, typeUsers, onAddedOrDeletedSuccess}) {
+function CustomTable({ dataProp, columnProp, numberGroup, typeUsers, onAddedOrDeletedSuccess }) {
 
     const user = useSelector(getUserData)
     const [locationUrl, setLocationUrl] = useState("")
@@ -15,25 +15,26 @@ function CustomTable({ dataProp, columnProp, numberGroup, typeUsers, onAddedOrDe
     const location = useLocation()
     const token = user.token
 
+    
+
     useEffect(() => {
         const fetchUrl = () => {
             setLocationUrl(location.pathname)
         }
         fetchUrl()
-
     }, [locationUrl])
 
-    const addUserToGroup = async(userId) =>{
+    const addUserToGroup = async (userId) => {
         try {
-            const res = await addUserGroup(token,numberGroup,userId)
+            const res = await addUserGroup(token, numberGroup, userId)
             onAddedOrDeletedSuccess()
         } catch (error) {
             console.log(error);
         }
     }
-    const deleteUserToGroup = async(userId) =>{
+    const deleteUserToGroup = async (userId) => {
         try {
-            const res = await deleteUserGroup(token,numberGroup,userId)
+            const res = await deleteUserGroup(token, numberGroup, userId)
             onAddedOrDeletedSuccess()
         } catch (error) {
             console.log(error);
@@ -61,40 +62,42 @@ function CustomTable({ dataProp, columnProp, numberGroup, typeUsers, onAddedOrDe
                                     <td>
                                         <button className="iconActionsTeacher-design"><img src="../../trash.png" width="20px" height="20px" alt="" /></button>
                                         <Link to={`/group/${item.id}/users`}><button className="iconActionsTeacher-design"><img src="../../addStudentIcon.png" width="20px" height="20px" alt="" /></button></Link>
-                                        <CustomModal 
+                                        <CustomModal
                                             actionProp={"modifyGroup"}
                                             groupIdProp={item.id}
                                         />
                                     </td>}
                             </tr>)
                         }))) : locationUrl === `/group/${numberGroup}` || locationUrl === `/group/${numberGroup}/users` ?
-                        (
-                            dataProp.map((item) => {
-                                return (<tr key={item.id}>
+                        (<>
+                            {dataProp.map((item) => (
+                                <tr key={item.id}>
 
-                                    <>
-                                        <td>{item.firstName}</td>
-                                        <td>{item.lastName}</td>
-                                        <td>{item.email}</td>
-                                        {locationUrl === `/group/${numberGroup}/users` &&
-                                            <td>
-                                                {item.roleId !== 2 ?(
-                                                    <button className="iconActionsTeacher-design" onClick={()=>{
-                                                        typeUsers === "inGroup" ?
+                                    <td>{item.firstName}</td>
+                                    <td>{item.lastName}</td>
+                                    <td>{item.email}</td>
+                                    {locationUrl === `/group/${numberGroup}/users` &&
+                                        <td>
+                                            {item.roleId !== 2 ? (
+                                                <button className="iconActionsTeacher-design" onClick={() => {
+                                                    typeUsers === "inGroup" ?
                                                         deleteUserToGroup(item.id)
                                                         :
                                                         addUserToGroup(item.id)
-                                                        }}>
-                                                        <img src={typeUsers === "inGroup" ? "../../lessIcon.png" : "../../plusIcon.png"} width="20px" height="20px" alt="" />
-                                                    </button>):("TEACHER")}
-
-
-                                            </td>}
-                                    </>
-
-
-                                </tr>)
-                            })
+                                                }}>
+                                                    <img src={typeUsers === "inGroup" ? "../../lessIcon.png" : "../../plusIcon.png"} width="20px" height="20px" alt="" />
+                                                </button>) : ("TEACHER")}
+                                        </td>
+                                    }
+                                </tr>
+                            ))}
+                            {/* {locationUrl === `/group/${numberGroup}/users` &&
+                                emptyRows.map((_, index) => (
+                                    <tr key={`emptyRow-${index}`}>
+                                        <td colSpan={4} className="emptyRow-design"></td>
+                                    </tr>
+                                ))} */}
+                        </>
                         ) : (<></>)
                 }
             </tbody>
@@ -103,3 +106,5 @@ function CustomTable({ dataProp, columnProp, numberGroup, typeUsers, onAddedOrDe
 }
 
 export default CustomTable;
+
+

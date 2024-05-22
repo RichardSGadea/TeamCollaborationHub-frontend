@@ -134,3 +134,17 @@ export const deleteUserGroup = async (token,groupId,data) => {
     return res
 }
 
+//Get tasks from groupId
+
+export const bringTasksFromGroup = async(token,groupId) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const res = await axios.get(`${API_URL}/groups/${groupId}/tasks`, config)
+    
+    return res.data
+}
+

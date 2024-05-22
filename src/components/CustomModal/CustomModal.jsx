@@ -53,9 +53,10 @@ function CustomModal({ actionProp, groupIdProp }) {
     return (
         <>
             {user.decoded.userRole !== "teacher" ? (
+                actionProp === "createTask" ? (<button onClick={handleShow} className="iconActionsTeacher-design"><img src="../../plusIcon2.png" width="20px" height="20px" alt="" /></button>) :(
                 <Button variant="primary" onClick={handleShow}>
                     Launch demo modal
-                </Button>
+                </Button>)
             ) : actionProp === "modifyGroup" ? (
                 <button onClick={() => {
                     handleShow()

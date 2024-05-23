@@ -189,6 +189,16 @@ export const updateTaskById = async(token,group,taskData, task) => {
     }
     const res = await axios.put(`${API_URL}/groups/${group}/tasks/${task}`,data, config)
     return res
-    
+}
+
+// Delete task by id
+export const deleteTaskById = async(token,group, task) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const res = await axios.delete(`${API_URL}/groups/${group}/tasks/${task}`, config)
+    return res
     
 }

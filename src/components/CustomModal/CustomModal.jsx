@@ -4,10 +4,10 @@ import Modal from 'react-bootstrap/Modal';
 import { useSelector } from 'react-redux';
 import { getUserData } from '../../app/Slices/userSlice';
 import { CustomInput } from '../CustomInput/CustomInput';
-import { bringGroupById, bringTaskById, createNewGroup, createTask, updateGroupById, updateTaskById } from '../../services/apiCalls';
+import { bringGroupById, bringTaskById, createNewGroup, createTask, deleteTaskById, updateGroupById, updateTaskById } from '../../services/apiCalls';
 import "./CustomModal.css"
 
-function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess,editSuccess }) {
+function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, editSuccess }) {
     const [show, setShow] = useState(false);
 
     const [groupData, setGroupData] = useState({
@@ -24,6 +24,8 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess,edit
     })
 
     const [isEditing, setIsEditing] = useState(false)
+
+    const [areYouDeleting, setAreYouDeleting] = useState(false)
 
     const handleClose = () => {
         setShow(false);
@@ -59,7 +61,11 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess,edit
                 const res = await createTask(token, groupIdProp, taskData)
                 onCreateSuccess()
             } else if (actionProp === "editTask") {
-                const res = await updateTaskById(token, groupIdProp, taskData, taskIdProp)
+                if(areYouDeleting){
+                    const res = await deleteTaskById(token, groupIdProp, taskIdProp)
+                }else{
+                    const res = await updateTaskById(token, groupIdProp, taskData, taskIdProp)
+                }
                 editSuccess()
             }
 
@@ -120,8 +126,12 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess,edit
                                 <div className='d-flex'>
                                     {user.decoded.userRole !== "teacher" &&
                                         <>
-                                            <button className="iconActionsTeacher-design"><img src="../../trash.png" width="20px" height="20px" alt="" /></button>
                                             <button className="iconActionsTeacher-design" onClick={() => setIsEditing(!isEditing)}><img src="../../updateIcon.png" width="20px" height="20px" alt="" /></button>
+                                            <button className="iconActionsTeacher-design" onClick={() => setAreYouDeleting(!areYouDeleting)}><img src="../../trash.png" width="20px" height="20px" alt="" /></button>
+                                            {areYouDeleting && <button className="iconActionsTeacher-design" onClick={() => {
+                                                saveData()
+                                                handleClose()
+                                            }}><img src="../../confirmIcon.png" width="20px" height="20px" alt="" /></button>}
                                         </>
                                     }
                                 </div>

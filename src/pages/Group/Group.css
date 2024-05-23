@@ -1,6 +1,6 @@
 .groupBox-style{
     background-color: beige;
-    height: 88%;
+    min-height: 100vh;
 }
 
 .viewTitle-design{
@@ -9,4 +9,15 @@
 
 .groupName-design{
     color:#E59B9B;
+}
+
+.iconGoTasks-design{
+    border: none;
+    background: none;
+    margin-left: 0.8em;
+    padding: 0;
+}
+
+.iconGoTasks-design:hover{
+    cursor: pointer;
 }

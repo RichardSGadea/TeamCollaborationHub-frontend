@@ -23,6 +23,10 @@
     cursor: pointer;
 }
 
+.emptyRow-design{
+    height: 2.58em;
+}
+
 @media(max-width:650px){
     .table{
         font-size: 0.6em;

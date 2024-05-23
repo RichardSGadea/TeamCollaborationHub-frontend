@@ -11,7 +11,7 @@ export const Users = () => {
     const { groupId } = useParams();
     const [groupData, setGroupData] = useState(null);
     const [outsideUsers, setOutsideUsers] = useState(null)
-    const [userAddedOrDelete, setuserAddedorDelete] = useState(false)
+    const [userAddedOrDelete, setUserAddedOrDelete] = useState(false)
 
     const user = useSelector(getUserData)
     const token = user.token
@@ -26,13 +26,13 @@ export const Users = () => {
     const columnNames = [{ id: 1, name: "FirstName" }, { id: 2, name: "LastName" }, { id: 3, name: "Email" }, { id: 4, name: "Actions" }]
 
     const handleUserAddedOrDeletedSuccess = () => {
-        setuserAddedorDelete(!userAddedOrDelete)
+        setUserAddedOrDelete(!userAddedOrDelete)
     }
 
     useEffect(() => {
         fetchGroupData(groupId)
         fetchOtherUsers(groupId)
-    }, [groupId, currentPage,currentPageGroup, userAddedOrDelete])
+    }, [groupId, currentPage, currentPageGroup, userAddedOrDelete])
 
     const fetchGroupData = async (id) => {
         //Retrieve group data
@@ -49,14 +49,14 @@ export const Users = () => {
         //Retrieve group data
         try {
             const res = await bringOutUsers(token, id, currentPage)
-            setOutsideUsers(res.studentsOutOfGroup);
+            setOutsideUsers(res);
             setTotalPages(res.total_pages)
 
         } catch (error) {
             console.log(error);
         }
     };
-    
+
 
     if (!groupData || !outsideUsers) {
         return <div>Loading data...</div>;
@@ -74,6 +74,7 @@ export const Users = () => {
                         numberGroup={groupId}
                         typeUsers={"inGroup"}
                         onAddedOrDeletedSuccess={handleUserAddedOrDeletedSuccess}
+                        usersPerPage={groupData.per_page}
                     />
                     <button disabled={currentPageGroup == 1 ? "disabled" : ""} onClick={() => {
 
@@ -86,14 +87,8 @@ export const Users = () => {
                             setCurrentPageGroup(currentPageGroup + 1)
                         }
                     }}>{"->"}</button>
+
                     <h2 className="studentsTitle-design">Other Students</h2>
-                    <CustomTable
-                        dataProp={outsideUsers}
-                        columnProp={columnNames}
-                        numberGroup={groupId}
-                        typeUsers={"outGroup"}
-                        onAddedOrDeletedSuccess={handleUserAddedOrDeletedSuccess}
-                    />
                     <button disabled={currentPage == 1 ? "disabled" : ""} onClick={() => {
 
                         if (currentPage > 1) {
@@ -105,6 +100,16 @@ export const Users = () => {
                             setCurrentPage(currentPage + 1)
                         }
                     }}>{"->"}</button>
+
+                    <CustomTable
+                        dataProp={outsideUsers.studentsOutOfGroup}
+                        columnProp={columnNames}
+                        numberGroup={groupId}
+                        typeUsers={"outGroup"}
+                        onAddedOrDeletedSuccess={handleUserAddedOrDeletedSuccess}
+
+                    />
+
                 </div>
             </div>
         </div>

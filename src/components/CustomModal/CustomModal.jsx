@@ -113,7 +113,7 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
                 <button onClick={() => {
                     handleShow()
                     fetchOneTask(groupIdProp, taskIdProp)
-                }} className="iconActionsTeacher-design"><img src="../../readIcon2.png" width="20px" height="20px" alt="" /></button>
+                }} className="iconActionsTeacher-design"><img src="../../readIcon.png" width="20px" height="20px" alt="" /></button>
             ) : (
                 <button onClick={handleShow} className="iconActionsTeacher-design"><img src="../../plusIcon.png" width="20px" height="20px" alt="" /></button>
             )}

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux"
 import "./Tasks.css"
 import CustomModal from "../../components/CustomModal/CustomModal"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { bringTasksFromGroup } from "../../services/apiCalls"
 import CustomCard from "../../components/CustomCard/CustomCard"
 
@@ -21,10 +21,11 @@ export const Tasks = () => {
     const user = useSelector(getUserData)
     const token = user.token
 
+    const navigate = useNavigate()
 
     useEffect(() => {
         fetchTasksData(groupId)
-    }, [groupId,taskCreated,taskEdited])
+    }, [groupId, taskCreated, taskEdited])
 
     const fetchTasksData = async (id) => {
         try {
@@ -42,17 +43,18 @@ export const Tasks = () => {
 
     const handleCreateSuccess = () => {
         setTaskCreated(!taskCreated);
-        
+
     }
     const handleEditSuccess = () => {
         setTaskEdited(!taskEdited);
-        
+
     }
 
     return (
         <div className="container-fluid tasksBox-style">
             <div className="row">
                 <div className="col-12 d-flex">
+                    <button className="iconGoGroup-design" onClick={() => navigate(`/group/${groupId}`)}><img src="../../enterIcon.png" width="40px" height="40px" alt="" /></button>
                     <h1 className="viewTitle-design">Tasks</h1>
                     {user.decoded.userRole === "student" &&
                         <CustomModal
@@ -70,7 +72,7 @@ export const Tasks = () => {
                                 <h3 className="text-danger">To Do</h3>
                                 <div>
                                     {tasksToDo.map((item) => {
-                                        return(<CustomCard
+                                        return (<CustomCard
                                             key={item.id}
                                             groupNumber={groupId}
                                             classNameProp={"taskToDo-design m-1 border-danger"}
@@ -86,8 +88,8 @@ export const Tasks = () => {
                             <div className="col-12 col-lg-4">
                                 <h3 className="text-info">In Progress</h3>
                                 <div>
-                                {tasksInProgress.map((item) => {
-                                        return(<CustomCard
+                                    {tasksInProgress.map((item) => {
+                                        return (<CustomCard
                                             key={item.id}
                                             groupNumber={groupId}
                                             classNameProp={"taskInProgress-design m-1 border-info"}
@@ -103,8 +105,8 @@ export const Tasks = () => {
                             <div className="col-12 col-lg-4">
                                 <h3 className="text-success">Completed</h3>
                                 <div>
-                                {tasksCompleted.map((item) => {
-                                        return(<CustomCard
+                                    {tasksCompleted.map((item) => {
+                                        return (<CustomCard
                                             key={item.id}
                                             groupNumber={groupId}
                                             classNameProp={"taskCompleted-design m-1 border-success"}

@@ -155,10 +155,8 @@ export const createTask = async(token,groupId,data) => {
             Authorization: `Bearer ${token}`
         }
     }
-    console.log(token,groupId,data);
 
     const res = await axios.post(`${API_URL}/groups/${groupId}/tasks`,data, config)
-    console.log(res);
 }
 
 // Get task by id

@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { addUserGroup, deleteUserGroup } from "../../services/apiCalls";
 import CustomModal from "../CustomModal/CustomModal";
 
-function CustomTable({ dataProp, columnProp, numberGroup, typeUsers, onAddedOrDeletedSuccess }) {
+function CustomTable({ dataProp, columnProp, numberGroup, typeUsers, onAddedOrDeletedSuccess,usersPerPage }) {
 
     const user = useSelector(getUserData)
     const [locationUrl, setLocationUrl] = useState("")
@@ -15,7 +15,7 @@ function CustomTable({ dataProp, columnProp, numberGroup, typeUsers, onAddedOrDe
     const location = useLocation()
     const token = user.token
 
-    
+    const per_page=usersPerPage
 
     useEffect(() => {
         const fetchUrl = () => {
@@ -41,6 +41,15 @@ function CustomTable({ dataProp, columnProp, numberGroup, typeUsers, onAddedOrDe
         }
     }
 
+    let placeholders = []
+
+    if(locationUrl === `/group/${numberGroup}/users`){
+        if(dataProp.length < usersPerPage){
+
+            placeholders = Array(usersPerPage-dataProp.length).fill({});
+        }
+    }
+        
     return (
         <Table>
             <thead className={typeUsers === "" ? "tableHeader" : typeUsers === "outGroup" ? "otherTableHeader" : "tableHeader"}>
@@ -91,12 +100,12 @@ function CustomTable({ dataProp, columnProp, numberGroup, typeUsers, onAddedOrDe
                                     }
                                 </tr>
                             ))}
-                            {/* {locationUrl === `/group/${numberGroup}/users` &&
-                                emptyRows.map((_, index) => (
+                            {locationUrl === `/group/${numberGroup}/users` &&
+                                placeholders.map((_, index) => (
                                     <tr key={`emptyRow-${index}`}>
                                         <td colSpan={4} className="emptyRow-design"></td>
                                     </tr>
-                                ))} */}
+                                ))}
                         </>
                         ) : (<></>)
                 }

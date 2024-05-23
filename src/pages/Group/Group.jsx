@@ -63,7 +63,10 @@ export const Group = () => {
                         columnProp={columnNames}
                         numberGroup={groupId}
                     />
-                    <h2 className="groupName-design mt-5" onClick={() => navigate(`/group/${groupId}/tasks`)}>Tasks</h2>
+                    <div className="d-flex mt-5">
+                        <h2 className="groupName-design"  >Tasks</h2>
+                        <button className="iconGoTasks-design" onClick={() => navigate(`/group/${groupId}/tasks`)}><img src="../../enterIcon.png" width="20px" height="20px" alt="" /></button>
+                    </div>
                     <p className="statesTasks-design">Tasks To Do: <span className="text-danger">{totalTasks.tasksToDo}</span></p>
                     <p className="statesTasks-design">Tasks In Progress: <span className="text-info">{totalTasks.tasksInProgress}</span></p>
                     <p className="statesTasks-design">Completed Tasks: <span className="text-success">{totalTasks.tasksCompleted}</span></p>

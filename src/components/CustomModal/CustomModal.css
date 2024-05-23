@@ -4,3 +4,15 @@
     margin-left: 0.8em;
     padding: 0;
 }
+
+.btnCustomModal-design{
+    background-color: #74A78A;
+    border: none;
+    transition: 0.3s;
+}
+
+.btnCustomModal-design:hover{
+    cursor: pointer;
+    background-color:#E59B9B;
+    transition: 0.3s; 
+}

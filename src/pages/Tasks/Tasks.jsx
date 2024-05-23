@@ -16,6 +16,7 @@ export const Tasks = () => {
     const [tasksInProgress, setTasksInProgress] = useState([])
     const [tasksCompleted, setTasksCompleted] = useState([])
     const [taskCreated, setTaskCreated] = useState(false);
+    const [taskEdited, setTaskEdited] = useState(false);
 
     const user = useSelector(getUserData)
     const token = user.token
@@ -23,7 +24,7 @@ export const Tasks = () => {
 
     useEffect(() => {
         fetchTasksData(groupId)
-    }, [groupId,taskCreated])
+    }, [groupId,taskCreated,taskEdited])
 
     const fetchTasksData = async (id) => {
         try {
@@ -43,10 +44,10 @@ export const Tasks = () => {
         setTaskCreated(!taskCreated);
         
     }
-
-    // if (!tasksToDo) {
-    //     return <div>Loading data...</div>;
-    // }
+    const handleEditSuccess = () => {
+        setTaskEdited(!taskEdited);
+        
+    }
 
     return (
         <div className="container-fluid tasksBox-style">
@@ -71,10 +72,13 @@ export const Tasks = () => {
                                     {tasksToDo.map((item) => {
                                         return(<CustomCard
                                             key={item.id}
+                                            groupNumber={groupId}
                                             classNameProp={"taskToDo-design m-1 border-danger"}
                                             titleProp={item.name}
                                             createProp={item.createDate}
                                             deadlineProp={item.deadline}
+                                            taskNumber={item.id}
+                                            onEditSuccess={handleEditSuccess}
                                         />)
                                     })}
                                 </div>
@@ -82,13 +86,35 @@ export const Tasks = () => {
                             <div className="col-12 col-lg-4">
                                 <h3 className="text-info">In Progress</h3>
                                 <div>
-
+                                {tasksInProgress.map((item) => {
+                                        return(<CustomCard
+                                            key={item.id}
+                                            groupNumber={groupId}
+                                            classNameProp={"taskInProgress-design m-1 border-info"}
+                                            titleProp={item.name}
+                                            createProp={item.createDate}
+                                            deadlineProp={item.deadline}
+                                            taskNumber={item.id}
+                                            onEditSuccess={handleEditSuccess}
+                                        />)
+                                    })}
                                 </div>
                             </div>
                             <div className="col-12 col-lg-4">
                                 <h3 className="text-success">Completed</h3>
                                 <div>
-
+                                {tasksCompleted.map((item) => {
+                                        return(<CustomCard
+                                            key={item.id}
+                                            groupNumber={groupId}
+                                            classNameProp={"taskCompleted-design m-1 border-success"}
+                                            titleProp={item.name}
+                                            createProp={item.createDate}
+                                            deadlineProp={item.deadline}
+                                            taskNumber={item.id}
+                                            onEditSuccess={handleEditSuccess}
+                                        />)
+                                    })}
                                 </div>
                             </div>
                         </div>

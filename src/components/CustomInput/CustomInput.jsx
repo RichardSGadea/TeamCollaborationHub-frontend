@@ -1,6 +1,6 @@
 import "./CustomInput.css"
 
-export const CustomInput = ({typeProp,value, nameProp, placeholderProp, handlerProp,isDisabled}) => {
+export const CustomInput = ({typeProp,value, nameProp, placeholderProp, handlerProp,isDisabled, checked}) => {
 
     return(
 
@@ -12,6 +12,7 @@ export const CustomInput = ({typeProp,value, nameProp, placeholderProp, handlerP
             onChange={(e)=>handlerProp(e)}
             value={value}
             disabled={isDisabled}
+            checked={checked}
         >
         </input>
     )

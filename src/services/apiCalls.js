@@ -160,3 +160,35 @@ export const createTask = async(token,groupId,data) => {
     const res = await axios.post(`${API_URL}/groups/${groupId}/tasks`,data, config)
     console.log(res);
 }
+
+// Get task by id
+export const bringTaskById = async(token,group, task) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const res = await axios.get(`${API_URL}/groups/${group}/tasks/${task}`, config)
+    return res.data
+    
+}
+
+//Update task by id
+export const updateTaskById = async(token,group,taskData, task) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    //obj about taskData to can update it
+    const data = {
+        description: taskData.description,
+        spentHours: taskData.spentHours,
+        endDate: taskData.endDate,
+        stateId: taskData.stateId
+    }
+    const res = await axios.put(`${API_URL}/groups/${group}/tasks/${task}`,data, config)
+    return res
+    
+    
+}

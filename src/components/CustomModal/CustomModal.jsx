@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import { useSelector } from 'react-redux';
 import { getUserData } from '../../app/Slices/userSlice';
 import { CustomInput } from '../CustomInput/CustomInput';
-import { bringGroupById, bringTaskById, createNewGroup, createTask, deleteTaskById, updateGroupById, updateTaskById } from '../../services/apiCalls';
+import { bringGroupById, bringTaskById, createNewGroup, createTask, deleteGroupById, deleteTaskById, updateGroupById, updateTaskById } from '../../services/apiCalls';
 import "./CustomModal.css"
 
 function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, editSuccess }) {
@@ -57,6 +57,8 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
             }
             else if (actionProp === "modifyGroup") {
                 const res = await updateGroupById(token, groupIdProp, groupData)
+            } else if (actionProp === "deleteGroup") {
+                const res = await deleteGroupById(token, groupIdProp)
             } else if (actionProp === "createTask") {
                 const res = await createTask(token, groupIdProp, taskData)
                 onCreateSuccess()
@@ -109,6 +111,11 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
                     handleShow()
                     fetchOneGroup(groupIdProp)
                 }} className="iconActionsTeacher-design"><img src="../../updateIcon.png" width="20px" height="20px" alt="" /></button>
+            ): actionProp === "deleteGroup" ? (
+                <button onClick={() => {
+                    handleShow()
+                    fetchOneGroup(groupIdProp)
+                }} className="iconActionsTeacher-design"><img src="../../trash.png" width="20px" height="20px" alt="" /></button>
             ) : actionProp === "editTask" ? (
                 <button onClick={() => {
                     handleShow()
@@ -120,7 +127,7 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
             < Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>
-                        {actionProp === "createGroup" ? "New Group" : actionProp === "modifyGroup" ? "Modify Group" : actionProp === "createTask" ? "New Task" : actionProp === "editTask" ? (
+                        {actionProp === "createGroup" ? "New Group" : actionProp === "modifyGroup" ? "Modify Group" : actionProp === "deleteGroup" ? "Delete Group" : actionProp === "createTask" ? "New Task" : actionProp === "editTask" ? (
                             <div className='d-flex justify-content-between'>
                                 <h3>{taskData.name}</h3>
                                 <div className='d-flex'>
@@ -227,6 +234,8 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
                             <label htmlFor="state3">Completed</label>
                             <CustomInput typeProp={"radio"} id="state3" nameProp={"stateId"} handlerProp={(e) => inputTaskHandler(e)} value={"3"} checked={(taskData.stateId).toString() === "3"} isDisabled={!isEditing} />
                         </div>
+                    ): actionProp === "deleteGroup" ?(
+                        "Are you sure?"
                     ) : (
 
                         "Woohoo, you are reading this text in a modal!"

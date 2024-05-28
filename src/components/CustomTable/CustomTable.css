@@ -6,8 +6,8 @@
 }
 .table .otherTableHeader {
     --bs-table-color:white;
-    --bs-table-bg: #E59B9B;; /* I want this bg-color */
-    background-color: var(--bs-table-bg); /* Apply bg color */
+    --bs-table-bg: #E59B9B;;
+    background-color: var(--bs-table-bg);
     color: var(--bs-table-color)
 }
 

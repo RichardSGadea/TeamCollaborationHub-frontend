@@ -9,10 +9,12 @@ import CustomModal from "../CustomModal/CustomModal";
 
 function CustomTable({ dataProp, columnProp, numberGroup, typeUsers, onAddedOrDeletedSuccess,usersPerPage }) {
 
-    const user = useSelector(getUserData)
+    
     const [locationUrl, setLocationUrl] = useState("")
-
     const location = useLocation()
+
+    //Control user logged
+    const user = useSelector(getUserData)
     const token = user.token
 
     const per_page=usersPerPage
@@ -41,6 +43,7 @@ function CustomTable({ dataProp, columnProp, numberGroup, typeUsers, onAddedOrDe
         }
     }
 
+    //Control empty table rows
     let placeholders = []
 
     if(locationUrl === `/group/${numberGroup}/users`){
@@ -69,10 +72,13 @@ function CustomTable({ dataProp, columnProp, numberGroup, typeUsers, onAddedOrDe
                                 <td><Link to={`/group/${item.id}`}>{item.name}</Link></td>
                                 {user.decoded.userRole === "teacher" &&
                                     <td>
-                                        <button className="iconActionsTeacher-design"><img src="../../trash.png" width="20px" height="20px" alt="" /></button>
                                         <Link to={`/group/${item.id}/users`}><button className="iconActionsTeacher-design"><img src="../../addStudentIcon.png" width="20px" height="20px" alt="" /></button></Link>
                                         <CustomModal
                                             actionProp={"modifyGroup"}
+                                            groupIdProp={item.id}
+                                        />
+                                        <CustomModal
+                                            actionProp={"deleteGroup"}
                                             groupIdProp={item.id}
                                         />
                                     </td>}

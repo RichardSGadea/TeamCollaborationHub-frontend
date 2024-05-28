@@ -11,10 +11,13 @@ export const Tasks = () => {
 
     const { groupId } = useParams()
 
+    //About all tasks
     const [tasksData, setTasksData] = useState([])
     const [tasksToDo, setTasksToDo] = useState([])
     const [tasksInProgress, setTasksInProgress] = useState([])
     const [tasksCompleted, setTasksCompleted] = useState([])
+
+    //Controlled tasks states
     const [taskCreated, setTaskCreated] = useState(false);
     const [taskEdited, setTaskEdited] = useState(false);
 
@@ -29,8 +32,8 @@ export const Tasks = () => {
 
     const fetchTasksData = async (id) => {
         try {
+            //get tasks data
             const data = await bringTasksFromGroup(token, id)
-            // console.log(data);
             setTasksData(data)
             setTasksToDo(data.filter((element) => element.stateId === 1))
             setTasksInProgress(data.filter((element) => element.stateId === 2))
@@ -41,6 +44,7 @@ export const Tasks = () => {
         }
     };
 
+    //Handle to control tasks states
     const handleCreateSuccess = () => {
         setTaskCreated(!taskCreated);
 

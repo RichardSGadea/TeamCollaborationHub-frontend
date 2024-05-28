@@ -80,6 +80,17 @@ export const bringGroupById = async(token,id) => {
     return res.data
 }
 
+//Delte group by id
+export const deleteGroupById = async(token,id) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const res = await axios.delete(`${API_URL}/groups/${id}`, config)
+    return res
+}
+
 //Get users from group
 export const bringUsersFromGroup = async(token,id,page) => {
     const config = {

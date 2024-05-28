@@ -98,7 +98,7 @@ export const bringUsersFromGroup = async(token,id,page) => {
             Authorization: `Bearer ${token}`
         }
     }
-    const res = await axios.get(`${API_URL}/groups/group/${id}/users/?page=${page}`, config)
+    const res = await axios.get(`${API_URL}/groups/${id}/users/?page=${page}`, config)
     return res.data
 }
 
@@ -110,7 +110,7 @@ export const bringOutUsers = async(token,id,page) => {
             Authorization: `Bearer ${token}`
         }
     }
-    const res = await axios.get(`${API_URL}/groups/group/${id}/outUsers/?page=${page}`, config)
+    const res = await axios.get(`${API_URL}/groups/${id}/outUsers/?page=${page}`, config)
     return res.data
 }
 
@@ -211,24 +211,24 @@ export const deleteTaskById = async(token,group, task) => {
     return res 
 }
 
-// Get All Users at admin
-export const getAllUsers = async(token) => {
+// Get All Users as admin
+export const getAllUsers = async(token,page) => {
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
         }
     }
-    const res = await axios.get(`${API_URL}/users/allUsers`, config)
-    console.log(res)
+    const res = await axios.get(`${API_URL}/users/allUsers?page=${page}`, config)
+    return res.data
 }
 
-// Get All Groups at admin
-export const getAllGroups = async(token) => {
+// Get All Groups as admin
+export const getAllGroups = async(token,page) => {
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
         }
     }
-    const res = await axios.get(`${API_URL}/groups/allGroups`, config)
-    console.log(res)
+    const res = await axios.get(`${API_URL}/groups/allGroups?page=${page}`, config)
+    return res.data
 }

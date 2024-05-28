@@ -24,11 +24,14 @@
 }
 
 .emptyRow-design{
-    height: 2.58em;
+    height: 2.55em;
 }
 
 @media(max-width:650px){
     .table{
         font-size: 0.6em;
+    }
+    .emptyRow-design{
+        height: 4.05em;
     }
 }

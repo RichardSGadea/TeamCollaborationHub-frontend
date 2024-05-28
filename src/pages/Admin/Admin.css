@@ -1,0 +1,10 @@
+.adminBox-style{
+    background-color: beige;
+    height: 100vh;
+}
+
+@media(max-width:800px){
+    .adminBox-style{
+        font-size: 0.7em;
+    }
+}

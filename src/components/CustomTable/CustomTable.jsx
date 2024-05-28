@@ -7,9 +7,9 @@ import { useEffect, useState } from "react";
 import { addUserGroup, deleteUserGroup } from "../../services/apiCalls";
 import CustomModal from "../CustomModal/CustomModal";
 
-function CustomTable({ dataProp, columnProp, numberGroup, typeUsers, onAddedOrDeletedSuccess,usersPerPage }) {
+function CustomTable({ dataProp, columnProp, numberGroup, numberInfoData, typeUsers, onAddedOrDeletedSuccess, usersPerPage }) {
 
-    
+
     const [locationUrl, setLocationUrl] = useState("")
     const location = useLocation()
 
@@ -44,13 +44,13 @@ function CustomTable({ dataProp, columnProp, numberGroup, typeUsers, onAddedOrDe
     //Control empty table rows
     let placeholders = []
 
-    if(locationUrl === `/group/${numberGroup}/users`){
-        if(dataProp.length < usersPerPage){
+    if (locationUrl === `/group/${numberGroup}/users` || locationUrl === `/admin/${numberInfoData}` ) {
+        if (dataProp.length < usersPerPage) {
 
-            placeholders = Array(usersPerPage-dataProp.length).fill({});
+            placeholders = Array(usersPerPage - dataProp.length).fill({});
         }
     }
-        
+
     return (
         <Table>
             <thead className={typeUsers === "" ? "tableHeader" : typeUsers === "outGroup" ? "otherTableHeader" : "tableHeader"}>
@@ -111,6 +111,23 @@ function CustomTable({ dataProp, columnProp, numberGroup, typeUsers, onAddedOrDe
                                     </tr>
                                 ))}
                         </>
+                        ) : locationUrl === `/admin/${numberInfoData}` ? (
+                            <>
+                                {dataProp.map((item) => (
+                                    <tr key={item.id}>
+                                        <td>{numberInfoData ==="1" ? item.firstName : item.name}</td>
+                                        <td>{numberInfoData ==="1" ? item.lastName : item.users.length}</td>
+                                        <td>{numberInfoData ==="1" ? item.email : item.tasks.length}</td>
+                                        <td></td>
+                                    </tr>
+                                ))}
+                                {locationUrl === `/admin/${numberInfoData}` &&
+                                placeholders.map((_, index) => (
+                                    <tr key={`emptyRow-${index}`}>
+                                        <td colSpan={4} className="emptyRow-design"></td>
+                                    </tr>
+                                ))}
+                            </>
                         ) : (<></>)
                 }
             </tbody>

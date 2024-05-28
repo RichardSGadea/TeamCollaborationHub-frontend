@@ -1,6 +1,6 @@
 .boxHome-design{
     background-color:beige ;
-    height: 88%;
+    height: 100vh;
 }
 
 .title-welcome{
@@ -9,5 +9,11 @@
 
 .secondTitle-welcome{
     color:#E59B9B;
+}
+
+@media(max-width:764px){
+    .boxButtonsAdmin-style{
+        flex-direction: column;
+    }
 }
 

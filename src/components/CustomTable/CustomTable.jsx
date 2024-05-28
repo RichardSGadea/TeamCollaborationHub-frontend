@@ -17,8 +17,6 @@ function CustomTable({ dataProp, columnProp, numberGroup, typeUsers, onAddedOrDe
     const user = useSelector(getUserData)
     const token = user.token
 
-    const per_page=usersPerPage
-
     useEffect(() => {
         const fetchUrl = () => {
             setLocationUrl(location.pathname)

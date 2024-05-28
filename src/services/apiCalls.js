@@ -76,18 +76,18 @@ export const bringGroupById = async(token,id) => {
             Authorization: `Bearer ${token}`
         }
     }
-    const res = await axios.get(`${API_URL}/groups/${id}`, config)
+    const res = await axios.get(`${API_URL}/groups/group/${id}`, config)
     return res.data
 }
 
-//Delte group by id
+//Delete group by id
 export const deleteGroupById = async(token,id) => {
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
         }
     }
-    const res = await axios.delete(`${API_URL}/groups/${id}`, config)
+    const res = await axios.delete(`${API_URL}/groups/group/${id}`, config)
     return res
 }
 
@@ -98,7 +98,7 @@ export const bringUsersFromGroup = async(token,id,page) => {
             Authorization: `Bearer ${token}`
         }
     }
-    const res = await axios.get(`${API_URL}/groups/${id}/users/?page=${page}`, config)
+    const res = await axios.get(`${API_URL}/groups/group/${id}/users/?page=${page}`, config)
     return res.data
 }
 
@@ -110,7 +110,7 @@ export const bringOutUsers = async(token,id,page) => {
             Authorization: `Bearer ${token}`
         }
     }
-    const res = await axios.get(`${API_URL}/groups/${id}/outUsers/?page=${page}`, config)
+    const res = await axios.get(`${API_URL}/groups/group/${id}/outUsers/?page=${page}`, config)
     return res.data
 }
 
@@ -208,6 +208,27 @@ export const deleteTaskById = async(token,group, task) => {
         }
     }
     const res = await axios.delete(`${API_URL}/groups/${group}/tasks/${task}`, config)
-    return res
-    
+    return res 
+}
+
+// Get All Users at admin
+export const getAllUsers = async(token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const res = await axios.get(`${API_URL}/users/allUsers`, config)
+    console.log(res)
+}
+
+// Get All Groups at admin
+export const getAllGroups = async(token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const res = await axios.get(`${API_URL}/groups/allGroups`, config)
+    console.log(res)
 }

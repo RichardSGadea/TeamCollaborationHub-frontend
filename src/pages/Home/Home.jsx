@@ -5,14 +5,17 @@ import { useEffect, useState } from "react"
 import CustomTable from "../../components/CustomTable/CustomTable"
 import { bringGroups } from "../../services/apiCalls"
 import CustomModal from "../../components/CustomModal/CustomModal"
+import { CustomButton } from "../../components/CustomButton/CustomButton"
+import { useNavigate } from "react-router-dom"
 
 export const Home = () => {
 
-    const [myGroups, setMyGroups] = useState([])  
+    const [myGroups, setMyGroups] = useState([])
+
+    const navigate = useNavigate()
 
     const user = useSelector(getUserData)
     const token = user.token
-    
 
     const actionsRow = [{ id: 1, name: "Groups" }]
 
@@ -39,22 +42,48 @@ export const Home = () => {
             </div>
             <div className="row">
                 <div className="col-12 d-flex">
-                     <h3 className="secondTitle-welcome">{`Your groups`}</h3>
-                     {user.decoded.userRole === "teacher" && 
-                     <CustomModal 
-                        actionProp= "createGroup"
-                     />
-                     }
+                    {user.decoded.userRole !== "admin" ? (
+                        <>
+                            <h3 className="secondTitle-welcome">{`Your groups`}</h3>
+                            {user.decoded.userRole === "teacher" &&
+                                <CustomModal
+                                    actionProp="createGroup"
+                                />
+                            }
+                        </>
+                    ) : (
+                        <>
+                            <h3 className="secondTitle-welcome">{`Get info about`}</h3>
+                        </>
+                    )
+                    }
                 </div>
             </div>
 
-           
-            <div className="row">
+
+            <div className="row h-50">
                 <div className="col-12 col-lg-6">
-                    <CustomTable
-                        dataProp={myGroups}
-                        columnProp={actionsRow}
-                    />
+                    {user.decoded.userRole !== "admin" ? (
+                        <CustomTable
+                            dataProp={myGroups}
+                            columnProp={actionsRow}
+                        />
+                    ) : (
+                        <div className="boxButtonsAdmin-style d-flex justify-content-center align-items-center h-100">
+                            <CustomButton
+                                title={"All users"}
+                                classNameProp={"regularButtonClass btnControl-style"}
+                                functionEmit={()=>navigate("/admin/1")}
+                            />
+                            <CustomButton
+                                title={"All groups"}
+                                classNameProp={"regularButtonClass btnControl-style"}
+                                functionEmit={()=>navigate("/admin/2")}
+                            />
+                        </div>
+                    )
+                    }
+
                 </div>
                 <div className="col-12 col-lg-6">
 

@@ -1,18 +1,21 @@
-import { useEffect, useState } from 'react';
+import { act, useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { useSelector } from 'react-redux';
-import { getUserData } from '../../app/Slices/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserData, logout } from '../../app/Slices/userSlice';
 import { CustomInput } from '../CustomInput/CustomInput';
-import { bringGroupById, bringTaskById, createNewGroup, createTask, deleteGroupById, deleteTaskById, updateGroupById, updateTaskById } from '../../services/apiCalls';
+import { bringGroupById, bringTaskById, createNewGroup, createTask, deleteGroupById, deleteTaskById, updateGroupById, updateProfile, updateTaskById } from '../../services/apiCalls';
 import "./CustomModal.css"
+import { useNavigate } from 'react-router-dom';
 
-function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, editSuccess }) {
+function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, editSuccess, userProfileProp }) {
     const [show, setShow] = useState(false);
 
     const [groupData, setGroupData] = useState({
         nameGroup: ""
     })
+
+    const [userData, setUserData] = useState(userProfileProp)
 
     const [taskData, setTaskData] = useState({
         name: "",
@@ -30,11 +33,21 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
     const handleClose = () => {
         setShow(false);
         setIsEditing(false)
+        if (actionProp === "deactivateAccount") {
+            setUserData((prevState) => ({
+                ...prevState,
+                isActive: false
+            }))
+        }
     };
     const handleShow = () => setShow(true);
 
     const user = useSelector(getUserData)
     const token = user.token
+
+    const dispatch = useDispatch()
+
+    const navigate = useNavigate()
 
     const inputHandler = (e) => {
         setGroupData((prevSate) => ({
@@ -59,13 +72,18 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
                 const res = await updateGroupById(token, groupIdProp, groupData)
             } else if (actionProp === "deleteGroup") {
                 const res = await deleteGroupById(token, groupIdProp)
+            } else if (actionProp === "deactivateAccount") {
+                const res = await updateProfile(userData, token)
+                console.log(res)
+                dispatch(logout())
+                navigate("/home")
             } else if (actionProp === "createTask") {
                 const res = await createTask(token, groupIdProp, taskData)
                 onCreateSuccess()
             } else if (actionProp === "editTask") {
-                if(areYouDeleting){
+                if (areYouDeleting) {
                     const res = await deleteTaskById(token, groupIdProp, taskIdProp)
-                }else{
+                } else {
                     const res = await updateTaskById(token, groupIdProp, taskData, taskIdProp)
                 }
                 editSuccess()
@@ -94,36 +112,91 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
         }
     }
 
-    return (
-        <>
-            {user.decoded.userRole !== "teacher" ? (
-                actionProp === "createTask" ? (<button onClick={handleShow} className="iconActionsTeacher-design"><img src="../../plusIcon2.png" width="20px" height="20px" alt="" /></button>) : actionProp === "editTask" ? (
+    const renderActionButton = () => {
+        if (user.decoded.userRole !== "admin") {
+            if (actionProp === "deactivateAccount") {
+                return (
                     <button onClick={() => {
-                        handleShow()
-                        fetchOneTask(groupIdProp, taskIdProp)
-                    }} className="iconActionsTeacher-design"><img src="../../readIcon.png" width="20px" height="20px" alt="" /></button>
-                ) : (
+                        handleShow();
+                        setUserData((prevState) => ({
+                            ...prevState,
+                            isActive: !userData.isActive
+                        }))
+                    }} className="deactivateBtn-design">
+                        Deactivate your account
+                    </button>
+                );
+            }
+            if (user.decoded.userRole !== "teacher") {
+                if (actionProp === "createTask") {
+                    return (
+                        <button onClick={handleShow} className="iconActionsTeacher-design">
+                            <img src="../../plusIcon2.png" width="20px" height="20px" alt="" />
+                        </button>
+                    );
+                }
+                if (actionProp === "editTask") {
+                    return (
+                        <button onClick={() => {
+                            handleShow();
+                            fetchOneTask(groupIdProp, taskIdProp);
+                        }} className="iconActionsTeacher-design">
+                            <img src="../../readIcon.png" width="20px" height="20px" alt="" />
+                        </button>
+                    );
+                }
+                return (
                     <Button variant="primary" onClick={handleShow}>
                         Launch demo modal
-                    </Button>)
-            ) : actionProp === "modifyGroup" ? (
-                <button onClick={() => {
-                    handleShow()
-                    fetchOneGroup(groupIdProp)
-                }} className="iconActionsTeacher-design"><img src="../../updateIcon.png" width="20px" height="20px" alt="" /></button>
-            ): actionProp === "deleteGroup" ? (
-                <button onClick={() => {
-                    handleShow()
-                    fetchOneGroup(groupIdProp)
-                }} className="iconActionsTeacher-design"><img src="../../trash.png" width="20px" height="20px" alt="" /></button>
-            ) : actionProp === "editTask" ? (
-                <button onClick={() => {
-                    handleShow()
-                    fetchOneTask(groupIdProp, taskIdProp)
-                }} className="iconActionsTeacher-design"><img src="../../readIcon.png" width="20px" height="20px" alt="" /></button>
-            ) : (
-                <button onClick={handleShow} className="iconActionsTeacher-design"><img src="../../plusIcon.png" width="20px" height="20px" alt="" /></button>
-            )}
+                    </Button>
+                );
+            }
+            if (actionProp === "modifyGroup") {
+                return (
+                    <button onClick={() => {
+                        handleShow();
+                        fetchOneGroup(groupIdProp);
+                    }} className="iconActionsTeacher-design">
+                        <img src="../../updateIcon.png" width="20px" height="20px" alt="" />
+                    </button>
+                );
+            }
+            if (actionProp === "deleteGroup") {
+                return (
+                    <button onClick={() => {
+                        handleShow();
+                        fetchOneGroup(groupIdProp);
+                    }} className="iconActionsTeacher-design">
+                        <img src="../../trash.png" width="20px" height="20px" alt="" />
+                    </button>
+                );
+            }
+            if (actionProp === "editTask") {
+                return (
+                    <button onClick={() => {
+                        handleShow();
+                        fetchOneTask(groupIdProp, taskIdProp);
+                    }} className="iconActionsTeacher-design">
+                        <img src="../../readIcon.png" width="20px" height="20px" alt="" />
+                    </button>
+                );
+            }
+            return (
+                <button onClick={handleShow} className="iconActionsTeacher-design">
+                    <img src="../../plusIcon.png" width="20px" height="20px" alt="" />
+                </button>
+            );
+        }
+        return null;
+    };
+
+    useEffect(()=>{
+        console.log(userData);   
+    },[userData])
+
+    return (
+        <>
+            {renderActionButton()}
             < Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>
@@ -234,7 +307,7 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
                             <label htmlFor="state3">Completed</label>
                             <CustomInput typeProp={"radio"} id="state3" nameProp={"stateId"} handlerProp={(e) => inputTaskHandler(e)} value={"3"} checked={(taskData.stateId).toString() === "3"} isDisabled={!isEditing} />
                         </div>
-                    ): actionProp === "deleteGroup" ?(
+                    ) : actionProp === "deleteGroup" || actionProp === "deactivateAccount" ? (
                         "Are you sure?"
                     ) : (
 

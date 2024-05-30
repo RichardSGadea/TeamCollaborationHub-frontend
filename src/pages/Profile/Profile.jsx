@@ -6,6 +6,7 @@ import { bringProfile, updateProfile } from "../../services/apiCalls"
 import { CustomInput } from "../../components/CustomInput/CustomInput"
 import { CustomButton } from "../../components/CustomButton/CustomButton"
 import { useNavigate } from "react-router-dom"
+import CustomModal from "../../components/CustomModal/CustomModal"
 
 
 export const Profile = () => {
@@ -107,8 +108,12 @@ export const Profile = () => {
                         </div>
                         <div className="container-fluid">
                             <div className="row">
-                                <div className="col-12">
-                                    <h3 className="titles-update">Update profile</h3>
+                                <div className="col-12 d-flex justify-content-between">
+                                    <h3 className="titles-update">Update profile</h3> 
+                                    {user.decoded.userRole !== "admin" && <CustomModal 
+                                        actionProp={"deactivateAccount"}
+                                        userProfileProp={profileData}
+                                    />}
                                 </div>
                             </div>
                             <div className="row">

@@ -118,7 +118,7 @@ function CustomTable({ dataProp, columnProp, numberGroup, numberInfoData, typeUs
                                     <tr key={item.id}>
                                         <td>{numberInfoData === "1" ? item.firstName : item.name}</td>
                                         <td>{numberInfoData === "1" ? item.lastName : item.users.length}</td>
-                                        <td>{numberInfoData === "1" ? item.email : item.tasks.length}</td>
+                                        <td className={numberInfoData === "1" && item.isActive === false ? "rowData-design text-danger ":""}>{numberInfoData === "1" ? item.email : item.tasks.length}</td>
                                         <td>
                                             <AdminControlModal
                                                 actionProp={numberInfoData === "1" ? "editUser" : "editGroup"}

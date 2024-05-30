@@ -6,20 +6,22 @@ import { useSelector } from 'react-redux';
 import { getUserData } from '../../app/Slices/userSlice';
 import { bringOneUserData, updateOneUserData } from '../../services/apiCalls';
 
-function AdminControlModal({ actionProp, dataIdProp,editSuccess }) {
+function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
     const [show, setShow] = useState(false);
     const [areYouEditing, setAreYouEditing] = useState(true)
+    const [areYouLocking, setAreYouLocking] = useState(false)
     const [infoData, setInfoData] = useState({
         firstName: '',
         lastName: '',
         email: '',
-        password: ''
+        password: '',
+        isActive: '',
     })
 
     const user = useSelector(getUserData)
     const token = user.token
 
-    const handleClose = () => {setShow(false) ; setAreYouEditing(true)};
+    const handleClose = () => { setShow(false); setAreYouEditing(true) };
     const handleShow = () => setShow(true);
 
     const inputHandler = (e) => {
@@ -35,11 +37,14 @@ function AdminControlModal({ actionProp, dataIdProp,editSuccess }) {
                 try {
                     if (actionProp === "editUser") {
                         const res = await bringOneUserData(token, dataIdProp)
+                        console.log(res);
                         setInfoData({
                             firstName: res.firstName || '',
                             lastName: res.lastName || '',
                             email: res.email || '',
-                            password: res.password || ''
+                            password: res.password || '',
+                            isActive: res.isActive || '',
+                            roleId: res.roleId
                         })
 
                     } else if (actionProp === "editGroup") {
@@ -51,25 +56,26 @@ function AdminControlModal({ actionProp, dataIdProp,editSuccess }) {
                     console.log(error)
                 }
             }
-            fetchData()    
+            fetchData()
         }
-    },[show, actionProp, dataIdProp])
+    }, [show, actionProp, dataIdProp])
 
-    const saveData = async() => {
-        if(actionProp==="editUser"){
+    const saveData = async () => {
+        if (actionProp === "editUser") {
             try {
 
-                const res = await updateOneUserData(token,dataIdProp,infoData)
+                const res = await updateOneUserData(token, dataIdProp, infoData)
                 console.log(res);
                 editSuccess()
-
+                setAreYouEditing(true)
+                setAreYouLocking(false)
             } catch (error) {
                 console.log(error)
             }
         }
     }
 
-    if(!infoData){
+    if (!infoData) {
         return <div>Loading...</div>
     }
 
@@ -90,10 +96,38 @@ function AdminControlModal({ actionProp, dataIdProp,editSuccess }) {
                     <Modal.Title className='d-flex'>{actionProp === "editUser" ? (
                         <>
                             <h3>User Info</h3>
-                            <button className="iconActionsTeacher-design" onClick={() => {
-                                setAreYouEditing(!areYouEditing)
-                            }}><img src="../../updateIcon.png" width="20px" height="20px" alt="" />
-                            </button>
+
+                            {infoData.roleId !== 1 &&
+                                (<>
+                                    <button className="iconActionsTeacher-design" onClick={() => {
+                                        setAreYouEditing(!areYouEditing)
+                                    }}><img src="../../updateIcon.png" width="20px" height="20px" alt="" />
+                                    </button>
+                                    {!areYouEditing && ((
+                                        <>
+                                            <button className="iconActionsTeacher-design" onClick={() => {
+                                                setAreYouLocking(!areYouLocking)
+                                                setInfoData((prevSate) => ({
+                                                    ...prevSate,
+                                                    isActive:!infoData.isActive
+                                                }));
+                                            }}><img src={infoData.isActive ? "../../lockIcon.png" : "../../activeIcon.png"} width="20px" height="20px" alt="" />
+                                            </button>
+                                            {areYouLocking === true && (
+                                                <button className="iconActionsTeacher-design" onClick={() => {
+                                                    saveData()
+                                                    setShow()
+                                                }}><img src="../../confirmIcon.png" width="20px" height="20px" alt="" />
+                                                </button>
+                                            )
+                                            }
+                                        </>
+                                    )
+                                    
+                                    )}
+                                </>)
+                            }
+
                         </>
                     ) : actionProp === "editGroup" ? ("Group Info") : ""}</Modal.Title>
                 </Modal.Header>
@@ -158,7 +192,7 @@ function AdminControlModal({ actionProp, dataIdProp,editSuccess }) {
                     <Button variant="primary" onClick={() => {
                         saveData()
                         handleClose()
-                        }}>
+                    }}>
                         Save Changes
                     </Button>
                 </Modal.Footer>

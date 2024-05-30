@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import { CustomInput } from '../CustomInput/CustomInput';
 import { useSelector } from 'react-redux';
 import { getUserData } from '../../app/Slices/userSlice';
-import { bringOneUserData, updateOneUserData } from '../../services/apiCalls';
+import { bringGroupById, bringOneGroupById, bringOneUserData, updateOneUserData } from '../../services/apiCalls';
 
 function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
     const [show, setShow] = useState(false);
@@ -16,6 +16,12 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
         email: '',
         password: '',
         isActive: '',
+    })
+    const [infoDataGroup, setInfoDataGroup] = useState({})
+    const [totalTasks, setTotalTasks] = useState({
+        tasksToDo: 0,
+        tasksInProgress: 0,
+        tasksCompleted: 0,
     })
 
     const user = useSelector(getUserData)
@@ -37,7 +43,6 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
                 try {
                     if (actionProp === "editUser") {
                         const res = await bringOneUserData(token, dataIdProp)
-                        console.log(res);
                         setInfoData({
                             firstName: res.firstName || '',
                             lastName: res.lastName || '',
@@ -48,8 +53,13 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
                         })
 
                     } else if (actionProp === "editGroup") {
-                        const res = await bringOneGroupData(token, dataIdProp)
-                        // setInfoData(res)
+                        const res = await bringOneGroupById(token, dataIdProp)
+                        setInfoDataGroup(res)
+                        setTotalTasks({
+                            tasksToDo: (infoDataGroup.tasks.filter((element) => element.stateId === 1)).length,
+                            tasksInProgress: (infoDataGroup.tasks.filter((element) => element.stateId === 2)).length,
+                            tasksCompleted: (infoDataGroup.tasks.filter((element) => element.stateId === 3)).length,
+                        })
 
                     }
                 } catch (error) {
@@ -74,6 +84,8 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
             }
         }
     }
+
+
 
     if (!infoData) {
         return <div>Loading...</div>
@@ -182,8 +194,16 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
 
                     </div>
                 ) : actionProp === "editGroup" ? (
-                    <>
-                    </>
+                    <div className='container'>
+                        <div className='row'>
+                            <div className='col-12'>
+                                <h3>{`${infoDataGroup.id} -- ${infoDataGroup.name}`}</h3>
+                                <p className="statesTasks-design">Tasks To Do: <span className="text-danger">{totalTasks.tasksToDo}</span></p>
+                                <p className="statesTasks-design">Tasks In Progress: <span className="text-info">{totalTasks.tasksInProgress}</span></p>
+                                <p className="statesTasks-design">Completed Tasks: <span className="text-success">{totalTasks.tasksCompleted}</span></p>
+                            </div>
+                        </div>
+                    </div>
                 ) : "Woohoo, you are reading this text in a modal!"}</Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>

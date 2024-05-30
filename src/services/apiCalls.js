@@ -256,3 +256,14 @@ export const updateOneUserData = async(token,userId,data) => {
     return res
 
 }
+
+//Get group by id as Admin
+export const bringOneGroupById = async(token,id) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const res = await axios.get(`${API_URL}/groups/AllGroups/${id}`, config)
+    return res.data
+}

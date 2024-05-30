@@ -32,7 +32,6 @@ export const Group = () => {
         try {
             const data = await bringGroupById(token, id)
             setGroupData(data);
-            console.log(data);
             setTotalTasks({
                 tasksToDo: (data.tasks.filter((element) => element.stateId === 1)).length,
                 tasksInProgress: (data.tasks.filter((element) => element.stateId === 2)).length,

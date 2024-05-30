@@ -201,11 +201,6 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
         return null;
     };
 
-    useEffect(()=>{
-        console.log(userData);
-    },[])
-
-
     return (
         <>
             {renderActionButton()}

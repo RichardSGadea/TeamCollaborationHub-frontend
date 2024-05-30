@@ -1,6 +1,61 @@
 .adminBox-style{
     background-color: beige;
-    height: 100vh;
+    min-height: 100vh;
+}
+
+.btnPages{
+    background: beige;
+    width: 2em;
+    height: 2em;
+    border: none;
+}
+
+#startPageBtn{
+    background-image: url("../../../startIcon.png");
+    background-repeat: no-repeat;
+    background-size: cover;  
+}
+#lastPageBtn{
+    background-image: url("../../../returnIcon.png");
+    background-repeat: no-repeat;
+    background-size: cover;  
+}
+#nextPageBtn{
+    background-image: url("../../../nextIcon.png");
+    background-repeat: no-repeat;
+    background-size: cover; 
+}
+#finalPageBtn{
+    background-image: url("../../../goFinalIcon.png");
+    background-repeat: no-repeat;
+    background-size: cover; 
+}
+
+
+#startPageBtn:hover{
+    background-image: url("../../../startIconHover.png");
+}
+#lastPageBtn:hover{
+    background-image: url("../../../returnIconHover.png");
+}
+#nextPageBtn:hover{
+    background-image: url("../../../nextIconHover.png");
+}
+#finalPageBtn:hover{
+    background-image: url("../../../goFinalIconHover.png");
+}
+
+#startPageBtn:disabled{
+    background-image: none;
+}
+#lastPageBtn:disabled{
+    background-image: none;
+}
+#nextPageBtn:disabled{
+    background-image: none;
+}
+#finalPageBtn:disabled{
+    background-image: none;
 }
 
 @media(max-width:800px){

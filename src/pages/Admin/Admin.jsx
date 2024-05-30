@@ -11,6 +11,7 @@ export const Admin = () => {
     const { infoId } = useParams()
 
     const [infoData, setInfoData] = useState(null)
+    const [editSuccess, setEditSuccess] = useState(false)
 
     //To control pages change
     const [totalPages, setTotalPages] = useState()
@@ -22,6 +23,9 @@ export const Admin = () => {
     const columnNamesUsers = [{ id: 1, name: "FirstName" }, { id: 2, name: "LastName" }, { id: 3, name: "Email" }, { id: 4, name: "Actions" }];
     const columnNamesGroups = [{ id: 1, name: "Name" }, { id: 2, name: "Users" }, { id: 3, name: "Tasks" }, { id: 4, name: "Actions" }]
 
+    const handleEditSuccess = () => {
+        setEditSuccess(!editSuccess);
+    }
 
     useEffect(() => {
 
@@ -37,7 +41,7 @@ export const Admin = () => {
             }
         }
         fetchData()
-    }, [currentPage])
+    }, [currentPage, editSuccess])
 
     if (!infoData) {
         return <div>Loading data...</div>;
@@ -46,7 +50,7 @@ export const Admin = () => {
     return (
         <div className="container-fluid adminBox-style">
             <div className="row">
-                <div className="col-12">
+                <div className="col-12 p-4">
                     <div className="h-100">
                         <CustomTable
                             dataProp={infoId === "1" ? infoData.users : infoData.groups}
@@ -54,19 +58,26 @@ export const Admin = () => {
                             numberInfoData={infoId}
                             typeUsers={""}
                             usersPerPage={infoData.per_page}
+                            onEditSuccess={handleEditSuccess}
                         />
                     </div>
-                    <div className="h-50"> 
-                        <button disabled={currentPage == 1 ? "disabled" : ""} onClick={() => {
+                    <div className="d-flex justify-content-center">
+                        <button className="btnPages" id="startPageBtn" disabled={currentPage == 1 ? "disabled" : ""} onClick={() => {
+                            setCurrentPage(1)
+                        }}></button>
+                        <button className="btnPages" id="lastPageBtn" disabled={currentPage == 1 ? "disabled" : ""} onClick={() => {
                             if (currentPage > 1) {
                                 setCurrentPage(currentPage - 1)
                             }
-                        }}>{"<-"}</button>
-                        <button disabled={currentPage == totalPages ? "disabled" : ""} onClick={() => {
+                        }}></button>
+                        <button className="btnPages" id="nextPageBtn" disabled={currentPage == totalPages ? "disabled" : ""} onClick={() => {
                             if (currentPage < totalPages) {
                                 setCurrentPage(currentPage + 1)
                             }
-                        }}>{"->"}</button>
+                        }}></button>
+                        <button className="btnPages" id="finalPageBtn" disabled={currentPage == totalPages ? "disabled" : ""} onClick={() => {
+                            setCurrentPage(totalPages)
+                        }}></button>
                     </div>
 
                 </div>

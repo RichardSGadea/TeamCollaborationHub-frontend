@@ -27,11 +27,11 @@
     height: 2.55em;
 }
 
-@media(max-width:650px){
+@media(max-width:800px){
     .table{
         font-size: 0.6em;
     }
     .emptyRow-design{
-        height: 4.05em;
+        height: 5.55em;
     }
 }

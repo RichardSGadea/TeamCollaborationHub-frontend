@@ -1,11 +1,11 @@
 import "./CustomInput.css"
 
-export const CustomInput = ({typeProp,value, nameProp, placeholderProp, handlerProp,isDisabled, checked}) => {
+export const CustomInput = ({typeProp,value, nameProp, placeholderProp, handlerProp,isDisabled, checked, classProp}) => {
 
     return(
 
         <input
-            className="customInput-design"
+            className={`customInput-design ${classProp}`}
             type={typeProp}
             name={nameProp}
             placeholder={placeholderProp}

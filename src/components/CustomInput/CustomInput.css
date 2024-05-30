@@ -5,9 +5,14 @@
     margin: 1em;
 }
 
+.adminControl-input-design{
+    margin-top: 0;
+}
+
 @media(max-width:1440px){
     .customInput-design{
         width: 15em;
     }
-
 }
+
+

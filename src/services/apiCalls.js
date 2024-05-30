@@ -232,3 +232,27 @@ export const getAllGroups = async(token,page) => {
     const res = await axios.get(`${API_URL}/groups/allGroups?page=${page}`, config)
     return res.data
 }
+
+//Get one user by id
+export const bringOneUserData = async(token,userId) => {
+    const config ={
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const res = await axios.get(`${API_URL}/users/allUsers/${userId}`,config)
+    return res.data
+
+}
+
+//Update one user by id
+export const updateOneUserData = async(token,userId,data) => {
+    const config ={
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const res = await axios.put(`${API_URL}/users/allUsers/${userId}`,data,config)
+    return res
+
+}

@@ -1,21 +1,21 @@
-import { act, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserData, logout } from '../../app/Slices/userSlice';
 import { CustomInput } from '../CustomInput/CustomInput';
-import { bringGroupById, bringTaskById, createNewGroup, createTask, deleteGroupById, deleteTaskById, updateGroupById, updateProfile, updateTaskById } from '../../services/apiCalls';
+import { bringGroupById, bringProfile, bringTaskById, createNewGroup, createTask, deleteGroupById, deleteTaskById, updateGroupById, updateProfile, updateTaskById } from '../../services/apiCalls';
 import "./CustomModal.css"
 import { useNavigate } from 'react-router-dom';
 
-function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, editSuccess, userProfileProp }) {
+function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, editSuccess }) {
     const [show, setShow] = useState(false);
 
     const [groupData, setGroupData] = useState({
         nameGroup: ""
     })
 
-    const [userData, setUserData] = useState(userProfileProp)
+    const [userData, setUserData] = useState(null)
 
     const [taskData, setTaskData] = useState({
         name: "",
@@ -36,7 +36,7 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
         if (actionProp === "deactivateAccount") {
             setUserData((prevState) => ({
                 ...prevState,
-                isActive: false
+                isActive: true
             }))
         }
     };
@@ -103,6 +103,19 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
         }
     }
 
+    const fetchProfileUser = async (token) => {
+        try {
+            const myProfileData = await bringProfile(token)
+            setUserData(myProfileData)
+            setUserData((prevState) => ({
+                ...prevState,
+                isActive: false
+            }))
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const fetchOneTask = async (groupIdProp, taskIdProp) => {
         try {
             const res = await bringTaskById(token, groupIdProp, taskIdProp);
@@ -117,11 +130,9 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
             if (actionProp === "deactivateAccount") {
                 return (
                     <button onClick={() => {
+                        fetchProfileUser(token);
                         handleShow();
-                        setUserData((prevState) => ({
-                            ...prevState,
-                            isActive: !userData.isActive
-                        }))
+
                     }} className="deactivateBtn-design">
                         Deactivate your account
                     </button>
@@ -191,8 +202,9 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
     };
 
     useEffect(()=>{
-        console.log(userData);   
-    },[userData])
+        console.log(userData);
+    },[])
+
 
     return (
         <>

@@ -87,7 +87,7 @@ export const deleteGroupById = async(token,id) => {
             Authorization: `Bearer ${token}`
         }
     }
-    const res = await axios.delete(`${API_URL}/groups/group/${id}`, config)
+    const res = await axios.delete(`${API_URL}/groups/${id}`, config)
     return res
 }
 

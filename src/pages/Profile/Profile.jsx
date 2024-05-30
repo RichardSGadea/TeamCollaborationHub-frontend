@@ -112,7 +112,7 @@ export const Profile = () => {
                                     <h3 className="titles-update">Update profile</h3> 
                                     {user.decoded.userRole !== "admin" && <CustomModal 
                                         actionProp={"deactivateAccount"}
-                                        userProfileProp={profileData}
+                                        
                                     />}
                                 </div>
                             </div>

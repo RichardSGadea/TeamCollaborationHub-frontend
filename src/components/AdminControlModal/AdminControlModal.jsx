@@ -56,9 +56,9 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
                         const res = await bringOneGroupById(token, dataIdProp)
                         setInfoDataGroup(res)
                         setTotalTasks({
-                            tasksToDo: (infoDataGroup.tasks.filter((element) => element.stateId === 1)).length,
-                            tasksInProgress: (infoDataGroup.tasks.filter((element) => element.stateId === 2)).length,
-                            tasksCompleted: (infoDataGroup.tasks.filter((element) => element.stateId === 3)).length,
+                            tasksToDo: (res.tasks.filter((element) => element.stateId === 1)).length,
+                            tasksInProgress: (res.tasks.filter((element) => element.stateId === 2)).length,
+                            tasksCompleted: (res.tasks.filter((element) => element.stateId === 3)).length,
                         })
 
                     }
@@ -121,7 +121,7 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
                                                 setAreYouLocking(!areYouLocking)
                                                 setInfoData((prevSate) => ({
                                                     ...prevSate,
-                                                    isActive:!infoData.isActive
+                                                    isActive: !infoData.isActive
                                                 }));
                                             }}><img src={infoData.isActive ? "../../lockIcon.png" : "../../activeIcon.png"} width="20px" height="20px" alt="" />
                                             </button>
@@ -135,7 +135,7 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
                                             }
                                         </>
                                     )
-                                    
+
                                     )}
                                 </>)
                             }
@@ -198,9 +198,12 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
                         <div className='row'>
                             <div className='col-12'>
                                 <h3>{`${infoDataGroup.id} -- ${infoDataGroup.name}`}</h3>
-                                <p className="statesTasks-design">Tasks To Do: <span className="text-danger">{totalTasks.tasksToDo}</span></p>
-                                <p className="statesTasks-design">Tasks In Progress: <span className="text-info">{totalTasks.tasksInProgress}</span></p>
-                                <p className="statesTasks-design">Completed Tasks: <span className="text-success">{totalTasks.tasksCompleted}</span></p>
+                                <div>
+                                    <p className="statesTasks-design">Tasks To Do: <span className="text-danger">{totalTasks.tasksToDo}</span></p>
+                                    <p className="statesTasks-design">Tasks In Progress: <span className="text-info">{totalTasks.tasksInProgress}</span></p>
+                                    <p className="statesTasks-design">Completed Tasks: <span className="text-success">{totalTasks.tasksCompleted}</span></p>
+                                </div>
+
                             </div>
                         </div>
                     </div>

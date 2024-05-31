@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { getUserData } from "../../app/Slices/userSlice";
 import "./Group.css"
 import CustomTable from "../../components/CustomTable/CustomTable";
+import { notify } from "../../components/CustomToast/CustomToast";
 
 export const Group = () => {
 
@@ -38,7 +39,7 @@ export const Group = () => {
                 tasksCompleted: (data.tasks.filter((element) => element.stateId === 3)).length,
             })
         } catch (error) {
-            console.log(error);
+            notify(error.response.data.message,'error')
         }
     };
 

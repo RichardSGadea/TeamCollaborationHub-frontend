@@ -7,6 +7,7 @@ import { CustomInput } from "../../components/CustomInput/CustomInput"
 import { CustomButton } from "../../components/CustomButton/CustomButton"
 import { useNavigate } from "react-router-dom"
 import CustomModal from "../../components/CustomModal/CustomModal"
+import { notify } from "../../components/CustomToast/CustomToast"
 
 
 export const Profile = () => {
@@ -36,9 +37,8 @@ export const Profile = () => {
     const updateUserProfile = async () => {
         try {
             const res = await updateProfile(profileData, token)
-            console.log(res);
         } catch (error) {
-            console.log(error);
+            notify(error.response.data.message, 'error')
         }
     }
 

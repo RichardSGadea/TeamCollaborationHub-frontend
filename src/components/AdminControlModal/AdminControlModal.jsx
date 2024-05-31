@@ -5,6 +5,7 @@ import { CustomInput } from '../CustomInput/CustomInput';
 import { useSelector } from 'react-redux';
 import { getUserData } from '../../app/Slices/userSlice';
 import { bringGroupById, bringOneGroupById, bringOneUserData, updateOneUserData } from '../../services/apiCalls';
+import { notify } from '../CustomToast/CustomToast';
 
 function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
     const [show, setShow] = useState(false);
@@ -42,15 +43,19 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
             const fetchData = async () => {
                 try {
                     if (actionProp === "editUser") {
-                        const res = await bringOneUserData(token, dataIdProp)
-                        setInfoData({
-                            firstName: res.firstName || '',
-                            lastName: res.lastName || '',
-                            email: res.email || '',
-                            password: res.password || '',
-                            isActive: res.isActive || '',
-                            roleId: res.roleId
-                        })
+                        try {
+                            const res = await bringOneUserData(token, dataIdProp)
+                            setInfoData({
+                                firstName: res.firstName || '',
+                                lastName: res.lastName || '',
+                                email: res.email || '',
+                                password: res.password || '',
+                                isActive: res.isActive || '',
+                                roleId: res.roleId
+                            })
+                        } catch (error) {
+                            notify(error.response.data.message,'error')
+                        }
 
                     } else if (actionProp === "editGroup") {
                         const res = await bringOneGroupById(token, dataIdProp)
@@ -80,7 +85,7 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
                 setAreYouEditing(true)
                 setAreYouLocking(false)
             } catch (error) {
-                console.log(error)
+                notify(error.response.data.message,'error')
             }
         }
     }

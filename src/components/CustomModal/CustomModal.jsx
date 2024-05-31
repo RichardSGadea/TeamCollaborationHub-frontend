@@ -7,6 +7,7 @@ import { CustomInput } from '../CustomInput/CustomInput';
 import { bringGroupById, bringProfile, bringTaskById, createNewGroup, createTask, deleteGroupById, deleteTaskById, updateGroupById, updateProfile, updateTaskById } from '../../services/apiCalls';
 import "./CustomModal.css"
 import { useNavigate } from 'react-router-dom';
+import { notify } from '../CustomToast/CustomToast';
 
 function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, editSuccess }) {
     const [show, setShow] = useState(false);
@@ -66,27 +67,46 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
     const saveData = async () => {
         try {
             if (actionProp === "createGroup") {
-                const res = await createNewGroup(token, groupData)
+                try {
+                    const res = await createNewGroup(token, groupData)
+                } catch (error) {
+                    notify(error.response.data.message, 'error')
+                }
             }
             else if (actionProp === "modifyGroup") {
-                const res = await updateGroupById(token, groupIdProp, groupData)
+                try {
+                    const res = await updateGroupById(token, groupIdProp, groupData)
+                } catch (error) {
+                    notify(error.response.data.message, 'error')
+                }
             } else if (actionProp === "deleteGroup") {
                 const res = await deleteGroupById(token, groupIdProp)
             } else if (actionProp === "deactivateAccount") {
-                const res = await updateProfile(userData, token)
-                console.log(res)
-                dispatch(logout())
-                navigate("/home")
-            } else if (actionProp === "createTask") {
-                const res = await createTask(token, groupIdProp, taskData)
-                onCreateSuccess()
-            } else if (actionProp === "editTask") {
-                if (areYouDeleting) {
-                    const res = await deleteTaskById(token, groupIdProp, taskIdProp)
-                } else {
-                    const res = await updateTaskById(token, groupIdProp, taskData, taskIdProp)
+                try {
+                    const res = await updateProfile(userData, token)
+                    dispatch(logout())
+                    navigate("/home")
+                } catch (error) {
+                    notify(error.response.data.message,'error')
                 }
-                editSuccess()
+            } else if (actionProp === "createTask") {
+                try {
+                    const res = await createTask(token, groupIdProp, taskData)
+                    onCreateSuccess()
+                } catch (error) {
+                    notify(error.response.data.message,'error')
+                }
+            } else if (actionProp === "editTask") {
+                try {
+                    if (areYouDeleting) {
+                        const res = await deleteTaskById(token, groupIdProp, taskIdProp)
+                    } else {
+                        const res = await updateTaskById(token, groupIdProp, taskData, taskIdProp)
+                    }
+                    editSuccess()
+                } catch (error) {
+                    notify(error.response.data.message,'error')
+                }
             }
 
         } catch (error) {
@@ -99,7 +119,7 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
             const res = await bringGroupById(token, groupId);
             setGroupData({ nameGroup: res.name })
         } catch (error) {
-            console.log(error);
+            notify(error.response.data.message,'error')
         }
     }
 
@@ -112,7 +132,7 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
                 isActive: false
             }))
         } catch (error) {
-            console.log(error);
+            notify(error.response.data.message,'error')
         }
     }
 
@@ -121,7 +141,7 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
             const res = await bringTaskById(token, groupIdProp, taskIdProp);
             setTaskData(res)
         } catch (error) {
-            console.log(error);
+            notify(error.response.data.message,'error')
         }
     }
 
@@ -223,8 +243,7 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
                                     }
                                 </div>
                             </div>
-                        ) :
-                            "Modal heading"}
+                        ) : actionProp === "deactivateAccount" ? "Deactivate Account" : "Modal heading"}
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>

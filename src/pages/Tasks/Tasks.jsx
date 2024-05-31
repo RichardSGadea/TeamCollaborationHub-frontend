@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { bringTasksFromGroup } from "../../services/apiCalls"
 import CustomCard from "../../components/CustomCard/CustomCard"
+import { notify } from "../../components/CustomToast/CustomToast"
 
 export const Tasks = () => {
 
@@ -40,7 +41,7 @@ export const Tasks = () => {
             setTasksCompleted(data.filter((element) => element.stateId === 3))
 
         } catch (error) {
-            console.log(error)
+            notify(error.response.data.message,'error')
         }
     };
 

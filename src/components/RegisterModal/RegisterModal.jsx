@@ -4,6 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import {useState } from 'react';
 import { CustomInput } from '../CustomInput/CustomInput';
 import { registerCall } from '../../services/apiCalls';
+import { notify } from '../CustomToast/CustomToast';
 
 function MyVerticallyCenteredModal({ onRegisterSuccess, show, onHide }) {
     const [newUser, setNewUser] = useState({
@@ -11,8 +12,7 @@ function MyVerticallyCenteredModal({ onRegisterSuccess, show, onHide }) {
         email: "",
         password: "",
     });
-
-    const [errorMsg, setErrorMsg] = useState("")
+    
     const [msg, setMsg] = useState("")
 
     const inputHandler = (e) => {
@@ -46,7 +46,7 @@ function MyVerticallyCenteredModal({ onRegisterSuccess, show, onHide }) {
             }
 
         } catch (error) {
-            console.log(error);
+            notify(error.response.data.message, 'error')
         }
     }
 

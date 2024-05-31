@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { getUserData } from "../../app/Slices/userSlice";
 import { bringGroupById, bringOutUsers, bringUsersFromGroup } from "../../services/apiCalls";
 import CustomTable from "../../components/CustomTable/CustomTable";
+import { notify } from "../../components/CustomToast/CustomToast";
 
 export const Users = () => {
 
@@ -42,7 +43,7 @@ export const Users = () => {
             setTotalPagesGroup(resGroup.total_pages)
 
         } catch (error) {
-            console.log(error);
+            notify(error.response.data.message,'error')
         }
     };
     const fetchOtherUsers = async (id) => {
@@ -53,7 +54,7 @@ export const Users = () => {
             setTotalPages(res.total_pages)
 
         } catch (error) {
-            console.log(error);
+            notify(error.response.data.message,'error')
         }
     };
 

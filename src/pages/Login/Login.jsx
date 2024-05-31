@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { decodeToken } from "react-jwt";
 import { login } from "../../app/Slices/userSlice"
 import "./Login.css"
+import { notify } from "../../components/CustomToast/CustomToast";
 
 export const Login = () => {
     //Login and landing page
@@ -42,7 +43,7 @@ export const Login = () => {
 
             }
         } catch (error) {
-            console.log(error);
+            notify(error.response.data.message, 'error')
         }
     }
 

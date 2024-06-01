@@ -1,6 +1,6 @@
 # Frontend app
 <div align="center">
-  <img src="./TeamCollaborationHubIcon.png" alt="imagen-db" width="100" height="100" />
+  <img src="./public/TeamCollaborationHubIcon.png" alt="imagen-db" width="100" height="100" />
 </div>
 <div align="center">TeamCollaborationHub</div>
 <br></br>
@@ -48,7 +48,7 @@ Tecnologías utilizadas:
 
 <div>
 <p align="center">
-<img src="./captura1.jpg" width=70%> 
+<img src="./public/captura1.jpg" width=70%> 
 </div> 
 
 <div>
@@ -58,25 +58,33 @@ Tecnologías utilizadas:
 
 <div>
 <p align="center">
-<img src="./captura2.jpg" width=45%>
-<img src="./captura3.jpg" width=45%>
+<img src="./public/captura2.jpg" width=45%>
+<img src="./public/captura3.jpg" width=45%>
 </div>
 
 <div>
 <p align="center">
-<img src="./captura4.jpg" width=45%>
-<img src="./captura5.jpg" width=45%>
+<img src="./public/captura4.jpg" width=45%>
+<img src="./public/captura5.jpg" width=45%>
 </div>
 
 
 <div>
 <p align="center">
-<img src="./captura6.jpg" width=45%>
-<img src="./captura7.jpg" width=45%>
+<img src="./public/captura6.jpg" width=45%>
+<img src="./public/captura7.jpg" width=45%>
 </div>
 
 
 ## Mejoras
+✅ Añadir foro de conversación por grupo de trabajo existente.
 
+✅ Envío de correo electrónico de recordatorio de tarea.
+
+✅ Añadir calendario marcando días de finalización de tarea.
+
+✅ Añadir comentarios tarea.
+
+✅ Modificar estilos app.
 
 ## Licencia

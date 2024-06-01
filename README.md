@@ -88,3 +88,6 @@ Tecnologías utilizadas:
 ✅ Modificar estilos app.
 
 ## Licencia
+Proyecto desarrollado por Richard Sanz Gadea, bajo licencia MIT.
+
+Consulta el archivo <a href="./LICENSE">`LICENSE`</a> para más información.

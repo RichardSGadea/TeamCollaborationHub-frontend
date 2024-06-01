@@ -5,6 +5,7 @@ import { useSelector } from "react-redux"
 import { getUserData } from "../../app/Slices/userSlice"
 import "./Admin.css"
 import CustomTable from "../../components/CustomTable/CustomTable"
+import AdminControlModal from "../../components/AdminControlModal/AdminControlModal"
 
 export const Admin = () => {
 
@@ -12,6 +13,7 @@ export const Admin = () => {
 
     const [infoData, setInfoData] = useState(null)
     const [editSuccess, setEditSuccess] = useState(false)
+    const [createSuccess, setCreateSuccess] = useState(false)
 
     //To control pages change
     const [totalPages, setTotalPages] = useState()
@@ -25,6 +27,10 @@ export const Admin = () => {
 
     const handleEditSuccess = () => {
         setEditSuccess(!editSuccess);
+    }
+
+    const handleCreateSuccess = () => {
+        setCreateSuccess(!createSuccess);
     }
 
     useEffect(() => {
@@ -51,6 +57,14 @@ export const Admin = () => {
         <div className="container-fluid adminBox-style">
             <div className="row">
                 <div className="col-12 p-4">
+                    <div>
+                        {infoId === "1" &&
+                            <AdminControlModal
+                                actionProp={"createUser"}
+                                onCreateSuccess={handleCreateSuccess}
+                            />
+                        }
+                    </div>
                     <div className="h-100">
                         <CustomTable
                             dataProp={infoId === "1" ? infoData.users : infoData.groups}

@@ -4,10 +4,10 @@ import Modal from 'react-bootstrap/Modal';
 import { CustomInput } from '../CustomInput/CustomInput';
 import { useSelector } from 'react-redux';
 import { getUserData } from '../../app/Slices/userSlice';
-import { bringGroupById, bringOneGroupById, bringOneUserData, updateOneUserData } from '../../services/apiCalls';
+import { bringGroupById, bringOneGroupById, bringOneUserData, createUser, updateOneUserData } from '../../services/apiCalls';
 import { notify } from '../CustomToast/CustomToast';
 
-function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
+function AdminControlModal({ actionProp, dataIdProp, editSuccess, onCreateSuccess }) {
     const [show, setShow] = useState(false);
     const [areYouEditing, setAreYouEditing] = useState(true)
     const [areYouLocking, setAreYouLocking] = useState(false)
@@ -24,6 +24,11 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
         tasksInProgress: 0,
         tasksCompleted: 0,
     })
+    const [newUser, setNewUser] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+    })
 
     const user = useSelector(getUserData)
     const token = user.token
@@ -33,6 +38,13 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
 
     const inputHandler = (e) => {
         setInfoData((prevSate) => ({
+            ...prevSate,
+            [e.target.name]: e.target.value
+        }));
+    }
+
+    const inputNewUserHandler = (e) => {
+        setNewUser((prevSate) => ({
             ...prevSate,
             [e.target.name]: e.target.value
         }));
@@ -78,19 +90,22 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
     const saveData = async () => {
         if (actionProp === "editUser") {
             try {
-
                 const res = await updateOneUserData(token, dataIdProp, infoData)
-                console.log(res);
                 editSuccess()
                 setAreYouEditing(true)
                 setAreYouLocking(false)
             } catch (error) {
                 notify(error.response.data.message,'error')
             }
+        }else if (actionProp === "createUser") {
+            try {
+                const res = await createUser(token, newUser)
+                onCreateSuccess()
+            } catch (error) {
+                notify(error.response.data.message,'error')
+            }
         }
     }
-
-
 
     if (!infoData) {
         return <div>Loading...</div>
@@ -98,11 +113,22 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
 
     return (
         <>
-            {actionProp === "editUser" || "editGroup" ? (
+            {actionProp === "editUser" ? (
                 <button className="iconActionsTeacher-design" onClick={() => {
                     handleShow()
                 }}><img className='iconInfo-design' src="../../searchIcon.png" width="20px" height="20px" alt="" />
                 </button>
+            ) : actionProp === "editGroup" ? (
+                <button className="iconActionsTeacher-design" onClick={() => {
+                    handleShow()
+                }}><img className='iconInfo-design' src="../../searchIcon.png" width="20px" height="20px" alt="" />
+                </button>
+            ): actionProp === "createUser" ? (
+                <>
+                <button className="iconActionsTeacher-design" onClick={() => {
+                    handleShow()
+                }}><img className='iconInfo-design' src="../../plusIcon2.png" width="20px" height="20px" alt="" /></button>
+                </>
             ) : (<Button variant="primary" onClick={handleShow}>
                 Launch demo modal
             </Button>)}
@@ -146,7 +172,7 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
                             }
 
                         </>
-                    ) : actionProp === "editGroup" ? ("Group Info") : ""}</Modal.Title>
+                    ) : actionProp === "editGroup" ? ("Group Info") : actionProp === "createUser" ? ("Create Teacher") :""}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>{actionProp === "editUser" ? (
                     <div className='container'>
@@ -212,17 +238,42 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess }) {
                             </div>
                         </div>
                     </div>
-                ) : "Woohoo, you are reading this text in a modal!"}</Modal.Body>
+                ) : actionProp === "createUser" ? (
+                    <div className='container'>
+                        <div className='row'>
+                            <div className='col-12'>
+                                <CustomInput 
+                                    typeProp={"text"}
+                                    nameProp={"firstName"}
+                                    placeholderProp={"firstName"}
+                                    handlerProp={inputNewUserHandler}
+                                />
+                                <CustomInput 
+                                    typeProp={"text"}
+                                    nameProp={"lastName"}
+                                    placeholderProp={"lastName"}
+                                    handlerProp={inputNewUserHandler}
+                                />
+                                <CustomInput 
+                                    typeProp={"email"}
+                                    nameProp={"email"}
+                                    placeholderProp={"email"}
+                                    handlerProp={inputNewUserHandler}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                ): "Woohoo, you are reading this text in a modal!"}</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button className='btnCustomModal-design' variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={() => {
+                    {actionProp!=="editGroup" && <Button className='btnCustomModal-design' variant="primary" onClick={() => {
                         saveData()
                         handleClose()
                     }}>
                         Save Changes
-                    </Button>
+                    </Button>}
                 </Modal.Footer>
             </Modal>
         </>

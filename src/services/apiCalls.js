@@ -267,3 +267,14 @@ export const bringOneGroupById = async(token,id) => {
     const res = await axios.get(`${API_URL}/groups/AllGroups/${id}`, config)
     return res.data
 }
+
+//Create user as Admin
+export const createUser = async(token,data) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const res = await axios.post(`${API_URL}/users/create`,data, config)
+    return res
+}

@@ -1,6 +1,6 @@
 # Frontend app
 <div align="center">
-  <img src="./img/TeamCollaborationHubIcon.png" alt="imagen-db" width="100" height="100" />
+  <img src="./TeamCollaborationHubIcon.png" alt="imagen-db" width="100" height="100" />
 </div>
 <div align="center">TeamCollaborationHub</div>
 <br></br>
@@ -12,7 +12,6 @@
     <li><a href="#objetivo">Objetivo</a></li>
     <li><a href="#sobre-el-proyecto">Sobre el proyecto</a></li>
     <li><a href="#stack">Stack</a></li>
-    <li><a href="#diagrama-bd">Diagrama</a></li>
     <li><a href="#instalación-en-local">Instalación</a></li>
     <li><a href="#vistas">Vistas</a></li>
     <li><a href="#mejoras">Mejoras</a></li>
@@ -45,6 +44,36 @@ Tecnologías utilizadas:
 3. ``` $ npm run dev ```
 
 ## Vistas
+<br></br>
+
+<div>
+<p align="center">
+<img src="./captura1.jpg" width=70%> 
+</div> 
+
+<div>
+<p align="center">
+
+</div>
+
+<div>
+<p align="center">
+<img src="./captura2.jpg" width=45%>
+<img src="./captura3.jpg" width=45%>
+</div>
+
+<div>
+<p align="center">
+<img src="./captura4.jpg" width=45%>
+<img src="./captura5.jpg" width=45%>
+</div>
+
+
+<div>
+<p align="center">
+<img src="./captura6.jpg" width=45%>
+<img src="./captura7.jpg" width=45%>
+</div>
 
 
 ## Mejoras

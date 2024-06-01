@@ -77,30 +77,44 @@ export const Users = () => {
                         onAddedOrDeletedSuccess={handleUserAddedOrDeletedSuccess}
                         usersPerPage={groupData.per_page}
                     />
-                    <button disabled={currentPageGroup == 1 ? "disabled" : ""} onClick={() => {
-
-                        if (currentPageGroup > 1) {
-                            setCurrentPageGroup(currentPageGroup - 1)
-                        }
-                    }}>{"<-"}</button>
-                    <button disabled={currentPageGroup == totalPagesGroup ? "disabled" : ""} onClick={() => {
-                        if (currentPageGroup < totalPagesGroup) {
-                            setCurrentPageGroup(currentPageGroup + 1)
-                        }
-                    }}>{"->"}</button>
+                    <div className="d-flex justify-content-center">
+                        <button className="btnPages" id="startPageBtn" disabled={currentPageGroup == 1 ? "disabled" : ""} onClick={() => {
+                            setCurrentPageGroup(1)
+                        }}></button>
+                        <button className="btnPages" id="lastPageBtn" disabled={currentPageGroup == 1 ? "disabled" : ""} onClick={() => {
+                            if (currentPageGroup > 1) {
+                                setCurrentPageGroup(currentPageGroup - 1)
+                            }
+                        }}></button>
+                        <button className="btnPages" id="nextPageBtn" disabled={currentPageGroup == totalPagesGroup ? "disabled" : ""} onClick={() => {
+                            if (currentPageGroup < totalPagesGroup) {
+                                setCurrentPageGroup(currentPageGroup + 1)
+                            }
+                        }}></button>
+                        <button className="btnPages" id="finalPageBtn" disabled={currentPageGroup == totalPagesGroup ? "disabled" : ""} onClick={() => {
+                            setCurrentPageGroup(totalPagesGroup)
+                        }}></button>
+                    </div>
 
                     <h2 className="studentsTitle-design">Other Students</h2>
-                    <button disabled={currentPage == 1 ? "disabled" : ""} onClick={() => {
-
-                        if (currentPage > 1) {
-                            setCurrentPage(currentPage - 1)
-                        }
-                    }}>{"<-"}</button>
-                    <button disabled={currentPage == totalPages ? "disabled" : ""} onClick={() => {
-                        if (currentPage < totalPages) {
-                            setCurrentPage(currentPage + 1)
-                        }
-                    }}>{"->"}</button>
+                    <div className="d-flex justify-content-center">
+                        <button className="btnPages" id="startPageBtn" disabled={currentPage == 1 ? "disabled" : ""} onClick={() => {
+                            setCurrentPage(1)
+                        }}></button>
+                        <button className="btnPages" id="lastPageBtn" disabled={currentPage == 1 ? "disabled" : ""} onClick={() => {
+                            if (currentPage > 1) {
+                                setCurrentPage(currentPage - 1)
+                            }
+                        }}></button>
+                        <button className="btnPages" id="nextPageBtn" disabled={currentPage == totalPages ? "disabled" : ""} onClick={() => {
+                            if (currentPage < totalPages) {
+                                setCurrentPage(currentPage + 1)
+                            }
+                        }}></button>
+                        <button className="btnPages" id="finalPageBtn" disabled={currentPage == totalPages ? "disabled" : ""} onClick={() => {
+                            setCurrentPage(totalPages)
+                        }}></button>
+                    </div>
 
                     <CustomTable
                         dataProp={outsideUsers.studentsOutOfGroup}

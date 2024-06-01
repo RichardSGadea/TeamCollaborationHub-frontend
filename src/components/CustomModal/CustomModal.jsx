@@ -69,6 +69,7 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
             if (actionProp === "createGroup") {
                 try {
                     const res = await createNewGroup(token, groupData)
+                    
                 } catch (error) {
                     notify(error.response.data.message, 'error')
                 }
@@ -76,11 +77,15 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
             else if (actionProp === "modifyGroup") {
                 try {
                     const res = await updateGroupById(token, groupIdProp, groupData)
+                    
+
                 } catch (error) {
                     notify(error.response.data.message, 'error')
                 }
             } else if (actionProp === "deleteGroup") {
                 const res = await deleteGroupById(token, groupIdProp)
+                
+
             } else if (actionProp === "deactivateAccount") {
                 try {
                     const res = await updateProfile(userData, token)

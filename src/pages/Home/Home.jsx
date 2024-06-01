@@ -24,6 +24,7 @@ export const Home = () => {
         actionsRow.push({ id: 2, name: "Actions" })
     }
 
+
     useEffect(() => {
         const fetchGroups = async () => {
             //Function to retrieve our groups 
@@ -31,7 +32,7 @@ export const Home = () => {
             setMyGroups(response)
         }
         fetchGroups()
-    },[])
+    })
 
 
     return (

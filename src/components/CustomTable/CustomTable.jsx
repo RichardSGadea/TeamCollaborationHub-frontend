@@ -8,7 +8,7 @@ import { addUserGroup, deleteUserGroup } from "../../services/apiCalls";
 import CustomModal from "../CustomModal/CustomModal";
 import AdminControlModal from "../AdminControlModal/AdminControlModal";
 
-function CustomTable({ dataProp, columnProp, numberGroup, numberInfoData, typeUsers, onAddedOrDeletedSuccess,onEditSuccess, usersPerPage }) {
+function CustomTable({ dataProp, columnProp, numberGroup, numberInfoData, typeUsers, onAddedOrDeletedSuccess,onEditSuccess, usersPerPage, onUpdateGroup }) {
 
 
     const [locationUrl, setLocationUrl] = useState("")
@@ -75,10 +75,13 @@ function CustomTable({ dataProp, columnProp, numberGroup, numberInfoData, typeUs
                                         <CustomModal
                                             actionProp={"modifyGroup"}
                                             groupIdProp={item.id}
+                                            onUpdateGroupSuccess={onUpdateGroup}
                                         />
                                         <CustomModal
                                             actionProp={"deleteGroup"}
                                             groupIdProp={item.id}
+                                            onUpdateGroupSuccess={onUpdateGroup}
+
                                         />
                                     </td>}
                             </tr>)

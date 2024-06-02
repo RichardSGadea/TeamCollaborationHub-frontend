@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom"
 export const Home = () => {
 
     const [myGroups, setMyGroups] = useState([])
+    const [updateGroups, setUpdateGroups] = useState(false) 
 
     const navigate = useNavigate()
 
@@ -32,8 +33,11 @@ export const Home = () => {
             setMyGroups(response)
         }
         fetchGroups()
-    })
+    }, [updateGroups])
 
+    const handleUpdateGroups = () => {
+        setUpdateGroups(!updateGroups)
+    }
 
     return (
         <div className="container-fluid boxHome-design">
@@ -50,7 +54,9 @@ export const Home = () => {
                             {user.decoded.userRole === "teacher" &&
                                 <CustomModal
                                     actionProp="createGroup"
+                                    onGroupCreated={handleUpdateGroups}
                                 />
+                                
                             }
                         </>
                     ) : (
@@ -69,6 +75,7 @@ export const Home = () => {
                         <CustomTable
                             dataProp={myGroups}
                             columnProp={actionsRow}
+                            onUpdateGroup={handleUpdateGroups}
                         />
                     ) : (
                         <div className="boxButtonsAdmin-style d-flex justify-content-center align-items-center h-100">

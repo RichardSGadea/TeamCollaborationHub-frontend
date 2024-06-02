@@ -9,7 +9,7 @@ import "./CustomModal.css"
 import { useNavigate } from 'react-router-dom';
 import { notify } from '../CustomToast/CustomToast';
 
-function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, editSuccess }) {
+function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, editSuccess, onGroupCreated, onUpdateGroupSuccess }) {
     const [show, setShow] = useState(false);
 
     const [groupData, setGroupData] = useState({
@@ -69,7 +69,7 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
             if (actionProp === "createGroup") {
                 try {
                     const res = await createNewGroup(token, groupData)
-                    
+                    onGroupCreated()
                 } catch (error) {
                     notify(error.response.data.message, 'error')
                 }
@@ -77,14 +77,14 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
             else if (actionProp === "modifyGroup") {
                 try {
                     const res = await updateGroupById(token, groupIdProp, groupData)
-                    
+                    onUpdateGroupSuccess()
 
                 } catch (error) {
                     notify(error.response.data.message, 'error')
                 }
             } else if (actionProp === "deleteGroup") {
                 const res = await deleteGroupById(token, groupIdProp)
-                
+                onUpdateGroupSuccess()
 
             } else if (actionProp === "deactivateAccount") {
                 try {

@@ -7,14 +7,18 @@ import { registerCall } from '../../services/apiCalls';
 import { notify } from '../CustomToast/CustomToast';
 
 function MyVerticallyCenteredModal({ onRegisterSuccess, show, onHide }) {
+
+    // Define state for new user
     const [newUser, setNewUser] = useState({
         firstName: "",
         email: "",
         password: "",
     });
     
-    const [msg, setMsg] = useState("")
 
+    const [msg, setMsg] = useState("") // Define state for message
+
+    // Function to handle input change
     const inputHandler = (e) => {
         setNewUser((prevSate) => ({
             ...prevSate,
@@ -22,6 +26,7 @@ function MyVerticallyCenteredModal({ onRegisterSuccess, show, onHide }) {
         }));
     }
 
+     // Function to reset input fields
     const resetInputHandler = () => {
         setNewUser({
             firstName: "",
@@ -30,23 +35,23 @@ function MyVerticallyCenteredModal({ onRegisterSuccess, show, onHide }) {
         })
     }
 
+    // Function to register user
     const registerMe = async () => {
         try {
-            //Function to register....
+            // Call registerCall function
             const res = await registerCall(newUser);
             if (res.status === 201) {
-                setMsg(res.data.message)
+                setMsg(res.data.message)// Set message
                 setTimeout(() => {
                     setMsg("")
                     resetInputHandler()
                     onHide()
-                    //Notify parent component about successful registration
-                    onRegisterSuccess();
+                    onRegisterSuccess(); // Notify parent component about successful registration
                 }, 2000)
             }
 
         } catch (error) {
-            notify(error.response.data.message, 'error')
+            notify(error.response.data.message, 'error') // Notify error
         }
     }
 
@@ -118,9 +123,10 @@ function MyVerticallyCenteredModal({ onRegisterSuccess, show, onHide }) {
 }
 
 function RegisterModal({ titleProp, btnProp }) {
-    const [modalShow, setModalShow] = useState(false);
-    const [registered, setRegistered] = useState(false);
+    const [modalShow, setModalShow] = useState(false); // Define state for modal
+    const [registered, setRegistered] = useState(false); // Define state for registered status
 
+    // Function to handle register success
     const handleRegisterSuccess = () => {
         setRegistered(true);
         

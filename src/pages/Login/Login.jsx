@@ -12,13 +12,16 @@ import { notify } from "../../components/CustomToast/CustomToast";
 export const Login = () => {
     //Login and landing page
 
+    // State to hold user credentials for login
     const [credentials, setCredentials] = useState({
         email: "",
         password: "",
     });
 
+    // Hook to dispatch actions to the Redux store
     const dispatch = useDispatch()
 
+    // Handler for input changes
     const inputHandler = (e) => {
         setCredentials((prevSate) => ({
             ...prevSate,
@@ -26,11 +29,13 @@ export const Login = () => {
         }));
     }
 
+    // Function to handle user login
     const loginMe = async () => {
         try {
             //Function to login...
             const res = await loginCall(credentials);
             if (res.data.token) {
+                // Decode the token to get user information
                 const uDecoded = decodeToken(res.data.token)
 
                 const passport = {
@@ -38,7 +43,7 @@ export const Login = () => {
                     decoded: uDecoded
                 }
 
-                //Save passport on RDX
+                // Dispatch login action to store user data in Redux
                 dispatch(login(passport))
 
             }

@@ -10,22 +10,27 @@ import { useNavigate } from "react-router-dom"
 
 
 export const Home = () => {
-
+    // State to hold the groups data
     const [myGroups, setMyGroups] = useState([])
+    // State to trigger updates in groups data
     const [updateGroups, setUpdateGroups] = useState(false) 
 
+    // Navigation hook
     const navigate = useNavigate()
 
+    // Get user data from Redux store
     const user = useSelector(getUserData)
     const token = user.token
 
+    // Define the columns for the table
     const actionsRow = [{ id: 1, name: "Groups" }]
 
+    // Add "Actions" column for teacher role
     if (user.decoded.userRole === "teacher") {
         actionsRow.push({ id: 2, name: "Actions" })
     }
 
-
+    // Fetch groups data when component mounts or updateGroups state changes
     useEffect(() => {
         const fetchGroups = async () => {
             //Function to retrieve our groups 
@@ -33,8 +38,9 @@ export const Home = () => {
             setMyGroups(response)
         }
         fetchGroups()
-    }, [updateGroups])
+    }, [updateGroups, token])
 
+    // Handle updates to the groups data
     const handleUpdateGroups = () => {
         setUpdateGroups(!updateGroups)
     }

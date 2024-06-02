@@ -12,6 +12,7 @@ import { notify } from '../CustomToast/CustomToast';
 function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, editSuccess, onGroupCreated, onUpdateGroupSuccess }) {
     const [show, setShow] = useState(false);
 
+    // State variables for managing group data, user data, task data, editing state, and deletion state
     const [groupData, setGroupData] = useState({
         nameGroup: ""
     })
@@ -31,6 +32,17 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
 
     const [areYouDeleting, setAreYouDeleting] = useState(false)
 
+    // React Router hook for navigation
+    const navigate = useNavigate()
+
+    // Redux hook for dispatching actions
+    const dispatch = useDispatch()
+
+    // Redux hook for accessing user data from the store
+    const user = useSelector(getUserData)
+    const token = user.token
+
+    // Function to handle modal closing
     const handleClose = () => {
         setShow(false);
         setIsEditing(false)
@@ -41,15 +53,11 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
             }))
         }
     };
+
+    // Function to handle modal opening
     const handleShow = () => setShow(true);
 
-    const user = useSelector(getUserData)
-    const token = user.token
-
-    const dispatch = useDispatch()
-
-    const navigate = useNavigate()
-
+    // Function to handle input changes for group data
     const inputHandler = (e) => {
         setGroupData((prevSate) => ({
             ...prevSate,
@@ -57,6 +65,7 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
         }));
     }
 
+    // Function to handle input changes for task data
     const inputTaskHandler = (e) => {
         setTaskData((prevSate) => ({
             ...prevSate,
@@ -64,6 +73,7 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
         }));
     }
 
+    // Function to save data based on the action
     const saveData = async () => {
         try {
             if (actionProp === "createGroup") {
@@ -92,14 +102,14 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
                     dispatch(logout())
                     navigate("/home")
                 } catch (error) {
-                    notify(error.response.data.message,'error')
+                    notify(error.response.data.message, 'error')
                 }
             } else if (actionProp === "createTask") {
                 try {
                     const res = await createTask(token, groupIdProp, taskData)
                     onCreateSuccess()
                 } catch (error) {
-                    notify(error.response.data.message,'error')
+                    notify(error.response.data.message, 'error')
                 }
             } else if (actionProp === "editTask") {
                 try {
@@ -110,7 +120,7 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
                     }
                     editSuccess()
                 } catch (error) {
-                    notify(error.response.data.message,'error')
+                    notify(error.response.data.message, 'error')
                 }
             }
 
@@ -119,15 +129,17 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
         }
     }
 
+    // Function to fetch group data by ID
     const fetchOneGroup = async (groupId) => {
         try {
             const res = await bringGroupById(token, groupId);
             setGroupData({ nameGroup: res.name })
         } catch (error) {
-            notify(error.response.data.message,'error')
+            notify(error.response.data.message, 'error')
         }
     }
 
+    // Function to fetch user profile data
     const fetchProfileUser = async (token) => {
         try {
             const myProfileData = await bringProfile(token)
@@ -137,19 +149,21 @@ function CustomModal({ actionProp, groupIdProp, taskIdProp, onCreateSuccess, edi
                 isActive: false
             }))
         } catch (error) {
-            notify(error.response.data.message,'error')
+            notify(error.response.data.message, 'error')
         }
     }
 
+    // Function to fetch task data by ID
     const fetchOneTask = async (groupIdProp, taskIdProp) => {
         try {
             const res = await bringTaskById(token, groupIdProp, taskIdProp);
             setTaskData(res)
         } catch (error) {
-            notify(error.response.data.message,'error')
+            notify(error.response.data.message, 'error')
         }
     }
 
+    // Function to render action button based on user role and action prop
     const renderActionButton = () => {
         if (user.decoded.userRole !== "admin") {
             if (actionProp === "deactivateAccount") {

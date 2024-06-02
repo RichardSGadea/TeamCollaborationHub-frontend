@@ -11,20 +11,22 @@ import AdminControlModal from "../AdminControlModal/AdminControlModal";
 function CustomTable({ dataProp, columnProp, numberGroup, numberInfoData, typeUsers, onAddedOrDeletedSuccess,onEditSuccess, usersPerPage, onUpdateGroup }) {
 
 
-    const [locationUrl, setLocationUrl] = useState("")
-    const location = useLocation()
+    const [locationUrl, setLocationUrl] = useState("")// State to hold the current location URL
+    const location = useLocation() // Get the current location from useLocation hook
 
-    //Control user logged
+    // Retrieve user data from the Redux store
     const user = useSelector(getUserData)
     const token = user.token
 
+
     useEffect(() => {
         const fetchUrl = () => {
-            setLocationUrl(location.pathname)
+            setLocationUrl(location.pathname) // Update the location URL state when the location changes
         }
         fetchUrl()
     }, [locationUrl])
 
+    // Function to add a user to a group
     const addUserToGroup = async (userId) => {
         try {
             const res = await addUserGroup(token, numberGroup, userId)
@@ -33,6 +35,8 @@ function CustomTable({ dataProp, columnProp, numberGroup, numberInfoData, typeUs
             console.log(error);
         }
     }
+
+     // Function to delete a user from a group
     const deleteUserToGroup = async (userId) => {
         try {
             const res = await deleteUserGroup(token, numberGroup, userId)

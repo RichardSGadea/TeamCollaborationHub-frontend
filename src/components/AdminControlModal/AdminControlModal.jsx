@@ -8,9 +8,15 @@ import { bringGroupById, bringOneGroupById, bringOneUserData, createUser, update
 import { notify } from '../CustomToast/CustomToast';
 
 function AdminControlModal({ actionProp, dataIdProp, editSuccess, onCreateSuccess }) {
+
+    // State for controlling modal visibility
     const [show, setShow] = useState(false);
+
+     // State for controlling edit mode or locking mode
     const [areYouEditing, setAreYouEditing] = useState(true)
     const [areYouLocking, setAreYouLocking] = useState(false)
+
+     // State for holding user/group/tasks data
     const [infoData, setInfoData] = useState({
         firstName: '',
         lastName: '',
@@ -24,18 +30,23 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess, onCreateSucces
         tasksInProgress: 0,
         tasksCompleted: 0,
     })
+
+    // State for holding new user data
     const [newUser, setNewUser] = useState({
         firstName: '',
         lastName: '',
         email: '',
     })
 
+    // Get user data from Redux store
     const user = useSelector(getUserData)
     const token = user.token
 
+    // Functions to handle modal show/hide
     const handleClose = () => { setShow(false); setAreYouEditing(true) };
     const handleShow = () => setShow(true);
 
+    // Function to handle input change for user data
     const inputHandler = (e) => {
         setInfoData((prevSate) => ({
             ...prevSate,
@@ -43,6 +54,7 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess, onCreateSucces
         }));
     }
 
+    // Function to handle input change for new user data
     const inputNewUserHandler = (e) => {
         setNewUser((prevSate) => ({
             ...prevSate,
@@ -50,6 +62,7 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess, onCreateSucces
         }));
     }
 
+    // Fetch data based on modal visibility and action type
     useEffect(() => {
         if (show) {
             const fetchData = async () => {
@@ -87,6 +100,7 @@ function AdminControlModal({ actionProp, dataIdProp, editSuccess, onCreateSucces
         }
     }, [show, actionProp, dataIdProp])
 
+    // Function to save data
     const saveData = async () => {
         if (actionProp === "editUser") {
             try {

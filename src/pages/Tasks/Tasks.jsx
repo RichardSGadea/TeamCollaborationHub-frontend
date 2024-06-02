@@ -10,42 +10,47 @@ import { notify } from "../../components/CustomToast/CustomToast"
 
 export const Tasks = () => {
 
+    // Get the groupId from URL parameters
     const { groupId } = useParams()
 
-    //About all tasks
+    // State for storing tasks
     const [tasksData, setTasksData] = useState([])
     const [tasksToDo, setTasksToDo] = useState([])
     const [tasksInProgress, setTasksInProgress] = useState([])
     const [tasksCompleted, setTasksCompleted] = useState([])
 
-    //Controlled tasks states
+    // Controlled states for task creation and editing
     const [taskCreated, setTaskCreated] = useState(false);
     const [taskEdited, setTaskEdited] = useState(false);
 
+    // Get user data from Redux store
     const user = useSelector(getUserData)
     const token = user.token
 
+    // Hook for navigation
     const navigate = useNavigate()
 
+    // Effect to fetch tasks data when groupId, taskCreated, or taskEdited changes
     useEffect(() => {
         fetchTasksData(groupId)
     }, [groupId, taskCreated, taskEdited])
 
+    // Function to fetch tasks data from the API
     const fetchTasksData = async (id) => {
         try {
-            //get tasks data
+            // Get tasks data from the API
             const data = await bringTasksFromGroup(token, id)
             setTasksData(data)
-            setTasksToDo(data.filter((element) => element.stateId === 1))
-            setTasksInProgress(data.filter((element) => element.stateId === 2))
-            setTasksCompleted(data.filter((element) => element.stateId === 3))
+            setTasksToDo(data.filter((element) => element.stateId === 1)) // Filter tasks with state "To Do"
+            setTasksInProgress(data.filter((element) => element.stateId === 2)) // Filter tasks with state "In Progress"
+            setTasksCompleted(data.filter((element) => element.stateId === 3)) // Filter tasks with state "Completed"
 
         } catch (error) {
-            notify(error.response.data.message,'error')
+            notify(error.response.data.message, 'error') // Show error notification if API call fails
         }
     };
 
-    //Handle to control tasks states
+    // Handlers to control task creation and editing states
     const handleCreateSuccess = () => {
         setTaskCreated(!taskCreated);
 
@@ -59,8 +64,10 @@ export const Tasks = () => {
         <div className="container-fluid tasksBox-style">
             <div className="row">
                 <div className="col-12 d-flex">
+                    {/* Button to navigate back to the group */}
                     <button className="iconGoGroup-design" onClick={() => navigate(`/group/${groupId}`)}><img src="../../enterIcon.png" width="40px" height="40px" alt="" /></button>
                     <h1 className="viewTitle-design">Tasks</h1>
+                    {/* Conditionally render the modal for creating tasks if the user is a student */}
                     {user.decoded.userRole === "student" &&
                         <CustomModal
                             actionProp="createTask"
@@ -76,6 +83,7 @@ export const Tasks = () => {
                             <div className="col-12 col-lg-4">
                                 <h3 className="text-danger">To Do</h3>
                                 <div>
+                                    {/* Render tasks in "To Do" state */}
                                     {tasksToDo.map((item) => {
                                         return (<CustomCard
                                             key={item.id}
@@ -93,6 +101,7 @@ export const Tasks = () => {
                             <div className="col-12 col-lg-4">
                                 <h3 className="text-info">In Progress</h3>
                                 <div>
+                                    {/* Render tasks in "In Progress" state */}
                                     {tasksInProgress.map((item) => {
                                         return (<CustomCard
                                             key={item.id}
@@ -110,6 +119,7 @@ export const Tasks = () => {
                             <div className="col-12 col-lg-4">
                                 <h3 className="text-success">Completed</h3>
                                 <div>
+                                    {/* Render tasks in "Completed" state */}
                                     {tasksCompleted.map((item) => {
                                         return (<CustomCard
                                             key={item.id}

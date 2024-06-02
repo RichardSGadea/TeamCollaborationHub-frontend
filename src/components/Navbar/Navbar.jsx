@@ -7,8 +7,9 @@ import { logout } from '../../app/Slices/userSlice';
 
 function NavigationBar() {
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch() // Initialize dispatch function from useDispatch hook
 
+    // Function to handle logout
     const logMeOut = () => {
         dispatch(logout())
     }

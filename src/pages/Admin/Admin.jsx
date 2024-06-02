@@ -9,22 +9,27 @@ import AdminControlModal from "../../components/AdminControlModal/AdminControlMo
 
 export const Admin = () => {
 
+    // Retrieve the information of the URL parameters, to know what to render
     const { infoId } = useParams()
 
+    // State to store information data, edit success, and create success status
     const [infoData, setInfoData] = useState(null)
     const [editSuccess, setEditSuccess] = useState(false)
     const [createSuccess, setCreateSuccess] = useState(false)
 
-    //To control pages change
+    // State to control pagination
     const [totalPages, setTotalPages] = useState()
     const [currentPage, setCurrentPage] = useState(1)
 
+    // Get user data from Redux store
     const user = useSelector(getUserData)
     const token = user.token
 
+    // Column names for users and groups tables
     const columnNamesUsers = [{ id: 1, name: "FirstName" }, { id: 2, name: "LastName" }, { id: 3, name: "Email" }, { id: 4, name: "Actions" }];
     const columnNamesGroups = [{ id: 1, name: "Name" }, { id: 2, name: "Users" }, { id: 3, name: "Tasks" }, { id: 4, name: "Actions" }]
 
+    // Handlers for edit and create success
     const handleEditSuccess = () => {
         setEditSuccess(!editSuccess);
     }
@@ -33,8 +38,8 @@ export const Admin = () => {
         setCreateSuccess(!createSuccess);
     }
 
+    // Effect to fetch user or group data based on `infoId`
     useEffect(() => {
-
         const fetchData = async () => {
             if (infoId === "1") {
                 const res = await getAllUsers(token, currentPage)
@@ -49,6 +54,7 @@ export const Admin = () => {
         fetchData()
     }, [currentPage, editSuccess])
 
+    // Show loading message while fetching data
     if (!infoData) {
         return <div>Loading data...</div>;
     }
@@ -57,6 +63,7 @@ export const Admin = () => {
         <div className="container-fluid adminBox-style">
             <div className="row">
                 <div className="col-12 p-4">
+                    {/* Admin control modal for creating users */}
                     <div>
                         {infoId === "1" &&
                             <AdminControlModal
@@ -66,6 +73,7 @@ export const Admin = () => {
                         }
                     </div>
                     <div className="h-100">
+                        {/* Custom table to display users or groups */}
                         <CustomTable
                             dataProp={infoId === "1" ? infoData.users : infoData.groups}
                             columnProp={infoId === "1" ? columnNamesUsers : columnNamesGroups}
@@ -76,6 +84,7 @@ export const Admin = () => {
                         />
                     </div>
                     <div className="d-flex justify-content-center">
+                        {/* Pagination controls */}
                         <button className="btnPages" id="startPageBtn" disabled={currentPage == 1 ? "disabled" : ""} onClick={() => {
                             setCurrentPage(1)
                         }}></button>
@@ -95,12 +104,7 @@ export const Admin = () => {
                     </div>
 
                 </div>
-
-
-
             </div>
-
         </div>
     )
-
 }

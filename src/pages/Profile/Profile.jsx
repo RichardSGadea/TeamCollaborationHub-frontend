@@ -12,28 +12,35 @@ import { notify } from "../../components/CustomToast/CustomToast"
 
 export const Profile = () => {
 
+    // State to hold profile data
     const [profileData, setProfileData] = useState({
         firstName: "",
         lastName: "",
         email: ""
     })
+
+    // State to hold change password data
     const [changePassword, setChangePassword] = useState({
         yourPassword: "",
         newPassword: "",
         newPasswordRepeat: "",
     })
 
+    // Navigation hook
     const navigate = useNavigate()
 
+    // State to hold error messages
     const [msgError, setMsgError] = useState("");
+
+    // State to manage profile editing mode
     const [areYouEditingProfileData, setAreYouEditingProfileData] = useState(false);
 
-    //Take userData
+    // Get user data from Redux store
     const myPassport = useSelector(getUserData)
     const token = myPassport.token
-
     const user = useSelector(getUserData)
 
+    // Function to update user profile
     const updateUserProfile = async () => {
         try {
             const res = await updateProfile(profileData, token)
@@ -42,6 +49,7 @@ export const Profile = () => {
         }
     }
 
+    // Handler for password input changes
     const passwordInputHandler = (e) => {
         setChangePassword((prevState) => ({
             ...prevState,
@@ -49,8 +57,8 @@ export const Profile = () => {
         }))
     }
 
+    // Function to update password
     const updatePassword = async (change) => {
-        //Function to update password
         try {
             if (change.newPassword !== change.newPasswordRepeat) {
                 setMsgError("New password doesn't match")
@@ -69,6 +77,7 @@ export const Profile = () => {
         }
     }
 
+    // Handler for profile input changes
     const inputHandler = (e) => {
         setProfileData((prevState) => ({
             ...prevState,
@@ -76,6 +85,7 @@ export const Profile = () => {
         }))
     }
 
+    // Function to handle closing the profile editing
     const handleClose = () => {
         //double navigate to force the profile to be reloaded when canceling profile data modification
         //so that it calls the API again and retrieves them
@@ -84,12 +94,15 @@ export const Profile = () => {
             navigate("/profile")
         })
     }
+
+    // Function to handle confirming profile editing
     const handleEditConfirm = () => {
         setAreYouEditingProfileData(false)
 
         handleClose()
     }
 
+    // Fetch profile data when component mounts
     useEffect(() => {
         const fetchProfile = async () => {
             const myProfileData = await bringProfile(token)
